@@ -1,7 +1,22 @@
 <resources>
     <string name="app_name">Stranger Things</string>
-    <string name="character_name">CHARACTER NAME</string>
     <string name="search_button">SEARCH</string>
     <string name="credits">API CREATED BY\nPAIGE GORRY\nKATE DAMERON</string>
-    <string name="name">YASMIN FRANCISQUETTI</string>
+    <string name="my_name">YASMIN FRANCISQUETTI</string>
+
+    <string name="name">CHARACTER NAME</string>
+    <string name="aliase">ALIASE</string>
+    <string name="status_born">STATUS, BORN</string>
+    <string name="gender">GENDER</string>
+    <string name="occupation">OCCUPATION</string>
+    <string name="residence">RESIDENCE</string>
+    <string name="portrayed_by">PORTRAYED BY</string>
+
+    <string name="affiliations">AFFILIATIONS</string>
+    <string name="affiliation">AFFILIATION</string>
+
+    <string name="relations">RELATIONS</string>
+    <string name="character_name_relation">CHARACTER NAME</string>
+    <string name="character_status_relation">STATUS</string>
+    <string name="character_born_relation">BORN</string>
 </resources>

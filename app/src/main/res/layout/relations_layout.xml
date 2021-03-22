@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relationsConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="200dp"
     android:background="@color/stranger_black">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Some Character Relation"
+        android:text="@string/relations"
         android:textColor="@color/stranger_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
