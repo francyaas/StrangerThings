@@ -16,7 +16,7 @@
         android:layout_marginTop="100dp"
         android:backgroundTint="@color/stranger_red"
         android:ems="10"
-        android:hint="@string/character_name"
+        android:hint="@string/name"
         android:inputType="textPersonName"
         android:textAllCaps="true"
         app:layout_constraintEnd_toEndOf="parent"

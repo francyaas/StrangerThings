@@ -16,35 +16,142 @@
         tools:context=".CharacterActivity">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textViewRelations"
+            style="@style/redText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Relationships below"
+            android:layout_marginTop="20dp"
+            android:text="@string/relations"
             android:textColor="@color/stranger_red"
-            app:layout_constraintBottom_toTopOf="@+id/viewPager2"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.818" />
+            app:layout_constraintTop_toBottomOf="@+id/viewPager22" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewAffiliations"
+            style="@style/redText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Some Character Info"
+            android:layout_marginTop="40dp"
+            android:text="@string/affiliations"
             android:textColor="@color/stranger_red"
-            app:layout_constraintBottom_toTopOf="@+id/viewPager2"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewPortrayedBy" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager2"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_width="310dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/stranger_red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRelations" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager22"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/stranger_red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAffiliations" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/st_iconbg" />
+
+        <TextView
+            android:id="@+id/textViewCharacterName"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/name"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/textViewAliase"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/aliase"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCharacterName" />
+
+        <TextView
+            android:id="@+id/textViewStatusBorn"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/status_born"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAliase" />
+
+        <TextView
+            android:id="@+id/textViewGender"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/gender"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStatusBorn" />
+
+        <TextView
+            android:id="@+id/textViewOccupation"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/occupation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewGender" />
+
+        <TextView
+            android:id="@+id/textViewResidence"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/residence"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOccupation" />
+
+        <TextView
+            android:id="@+id/textViewPortrayedBy"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/portrayed_by"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewResidence" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
