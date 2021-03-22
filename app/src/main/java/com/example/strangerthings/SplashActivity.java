@@ -18,7 +18,8 @@ public class SplashActivity extends AppCompatActivity
 
             try
             {
-                Thread.sleep(10000); // this 1000 is milliseconds
+                Thread.sleep(3000);
+
                 Intent starter = new Intent(this, MainActivity.class);
                 startActivity(starter);
             }
