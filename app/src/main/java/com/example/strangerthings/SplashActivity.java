@@ -15,18 +15,18 @@ public class SplashActivity extends AppCompatActivity
         setContentView(R.layout.activity_splash);
 
         new Thread(() -> {
-            /*
+
             try
             {
                 Thread.sleep(10000); // this 1000 is milliseconds
-                //Intent starter = new Intent(this, MainActivity.class);
-                //startActivity(starter);
+                Intent starter = new Intent(this, MainActivity.class);
+                startActivity(starter);
             }
             catch (InterruptedException ex)
             {
                 Log.e("waffles", "sleep interrupted, welcome to etec", ex);
             }
-             */
+
         }
         ).start();
 

@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity
 
     public void Search(View buttonSearch)
     {
-        Intent starter = new Intent(this, SplashActivity.class);
+        Intent starter = new Intent(this, CharacterActivity.class);
         startActivity(starter);
 
     }
