@@ -4,11 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Pair;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.SQLInput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +44,7 @@ public class CharacterDatabase
 
         database.close();
 
-        return null;
+        return result;
     }
 
     public void insertCharacter(Character character)
@@ -56,7 +54,7 @@ public class CharacterDatabase
 
         SQLiteStatement statement = database.compileStatement(
                 "insert into Character " +
-                        "values (null, ?, ?, ?, ?, ?, ?, ?, ? , ?)"
+                        "values (?, ?, ?, ?, ?, ?, ?, ? , ?)"
         );
 
         statement.bindString(1, character.getName());
@@ -68,14 +66,6 @@ public class CharacterDatabase
         statement.bindString(7, character.getResidences().get(0));
         statement.bindString(8, character.getGender());
         statement.bindString(9, character.getActor());
-
-        Cursor cursor = database.rawQuery("select last_insert_rowid()", null);
-
-        cursor.moveToFirst();
-
-        character.setDatabaseId(cursor.getString(0));
-
-        cursor.close();
 
         insertCharacterAssociations(character, database);
 
@@ -93,8 +83,8 @@ public class CharacterDatabase
 
         for (Character member : character.getAffiliatedCharacters())
         {
-            statement.bindString(1, character.getDatabaseId());
-            statement.bindString(2, member.getDatabaseId());
+            statement.bindString(1, character.getName());
+            statement.bindString(2, member.getName());
 
             statement.execute();
         }
@@ -103,8 +93,8 @@ public class CharacterDatabase
 
         for (Character member : character.getAffiliatedCharacters())
         {
-            statement.bindString(1, character.getDatabaseId());
-            statement.bindString(2, member.getDatabaseId());
+            statement.bindString(1, character.getName());
+            statement.bindString(2, member.getName());
 
             statement.execute();
         }
@@ -114,8 +104,6 @@ public class CharacterDatabase
     private Character getCursorCharacter(Cursor cursor)
     {
         Character result = new Character();
-
-        result.setDatabaseId(String.valueOf(cursor.getInt(0)));
 
         result.setName(cursor.getString(1));
 
@@ -152,16 +140,16 @@ public class CharacterDatabase
         List<Character> affiliatedCharacters = new ArrayList<>();
 
         Cursor cursor = database.rawQuery(
-                "select id, name, photoURL, status, birthYear, alias, " +
+                "select name, photoURL, status, birthYear, alias, " +
                         "occupation, residence, gender, actor, isAffiliation " +
                         "from CharacterAssociation" +
                         "inner join Character on " +
-                        "(Character.id = CharacterAssociation.firstCharacterId or " +
-                        " Character.id = CharacterAssociation.secondCharacterId)" +
-                        "where Character.id = ?" +
+                        "(Character.name = CharacterAssociation.firstCharacterName or " +
+                        " Character.name = CharacterAssociation.secondCharacterName)" +
+                        "where Character.name = ?" +
                         ""
 
-                , new String[]{output.getDatabaseId()});
+                , new String[]{output.getName()});
 
         while (cursor.moveToNext())
         {
@@ -193,12 +181,11 @@ public class CharacterDatabase
 
         database = context.openOrCreateDatabase("stranger_db", Context.MODE_PRIVATE, null);
 
-        database.execSQL("drop table if exists CharacterAssociation");
-        database.execSQL("drop table if exists Character");
+//        database.execSQL("drop table if exists CharacterAssociation");
+//        database.execSQL("drop table if exists Character");
 
         database.execSQL("" +
                 "create table if not exists Character (" +
-                "id int primary key," +
                 "name text," +
                 "photoURL text," +
                 "status text," +
@@ -213,8 +200,8 @@ public class CharacterDatabase
 
         database.execSQL("" +
                 "create table if not exists CharacterAssociation (" +
-                "firstCharacterId int," +
-                "secondCharacterId int," +
+                "firstCharacterName int," +
+                "secondCharacterName int," +
                 "isAffiliation int" +
                 ");"
         );

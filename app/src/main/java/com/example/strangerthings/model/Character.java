@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Character
 {
-    private String databaseId;
 
     private String name;
 
@@ -25,16 +24,6 @@ public class Character
 
     private String gender;
     private String actor;
-
-    public String getDatabaseId()
-    {
-        return databaseId;
-    }
-
-    public void setDatabaseId(String databaseId)
-    {
-        this.databaseId = databaseId;
-    }
 
     public String getName()
     {
@@ -151,8 +140,7 @@ public class Character
     public String toString()
     {
         return "Character{" +
-                "databaseId='" + databaseId + '\'' + "\n" +
-                ", name='" + name + '\'' + "\n" +
+                "  name='" + name + '\'' + "\n" +
                 ", photoUrl=" + photoUrl + "\n" +
                 ", status='" + status + '\'' + "\n" +
                 ", birthYear='" + birthYear + '\'' + "\n" +
