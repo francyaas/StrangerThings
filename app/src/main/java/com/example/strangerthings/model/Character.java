@@ -17,10 +17,11 @@ public class Character
     private List<String> aliases;
 
     private List<Character> relatedCharacters;
-    private List<Character> affiliatedCharacters;
 
-    private List<String> occupations;
-    private List<String> residences;
+    private List<String> affiliations;
+
+    private String occupation;
+    private String residence;
 
     private String gender;
     private String actor;
@@ -85,34 +86,34 @@ public class Character
         this.relatedCharacters = relatedCharacters;
     }
 
-    public List<Character> getAffiliatedCharacters()
+    public List<String> getAffiliations()
     {
-        return affiliatedCharacters;
+        return affiliations;
     }
 
-    public void setAffiliatedCharacters(List<Character> affiliatedCharacters)
+    public void setAffiliations(List<String> affiliations)
     {
-        this.affiliatedCharacters = affiliatedCharacters;
+        this.affiliations = affiliations;
     }
 
-    public List<String> getOccupations()
+    public String getOccupation()
     {
-        return occupations;
+        return occupation;
     }
 
-    public void setOccupations(List<String> occupations)
+    public void setOccupation(String occupation)
     {
-        this.occupations = occupations;
+        this.occupation = occupation;
     }
 
-    public List<String> getResidences()
+    public String getResidence()
     {
-        return residences;
+        return residence;
     }
 
-    public void setResidences(List<String> residences)
+    public void setResidence(String residence)
     {
-        this.residences = residences;
+        this.residence = residence;
     }
 
     public String getGender()
@@ -135,22 +136,21 @@ public class Character
         this.actor = actor;
     }
 
-
     @Override
     public String toString()
     {
         return "Character{" +
-                "  name='" + name + '\'' + "\n" +
-                ", photoUrl=" + photoUrl + "\n" +
-                ", status='" + status + '\'' + "\n" +
-                ", birthYear='" + birthYear + '\'' + "\n" +
-                ", aliases=" + aliases + "\n" +
-                ", relatedCharacters=" + relatedCharacters + "\n" +
-                ", affiliatedCharacters=" + affiliatedCharacters + "\n" +
-                ", occupations=" + occupations + "\n" +
-                ", residences=" + residences + "\n" +
-                ", gender='" + gender + '\'' + "\n" +
-                ", actor='" + actor + '\'' + "\n" +
+                "name='" + name + '\'' +
+                ", photoUrl=" + photoUrl +
+                ", status='" + status + '\'' +
+                ", birthYear='" + birthYear + '\'' +
+                ", aliases=" + aliases +
+                ", relatedCharacters=" + relatedCharacters +
+                ", affiliations=" + affiliations +
+                ", occupation='" + occupation + '\'' +
+                ", residence='" + residence + '\'' +
+                ", gender='" + gender + '\'' +
+                ", actor='" + actor + '\'' +
                 '}';
     }
 }

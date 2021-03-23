@@ -39,7 +39,8 @@ public class CharacterDatabase
         {
             result = getCursorCharacter(cursor);
 
-            loadCharacterAssociates(result, database);
+            loadCharacterRelations(result, database);
+            loadCharacterAffiliations(result, database);
         }
 
         cursor.close();
@@ -64,15 +65,17 @@ public class CharacterDatabase
         statement.bindString(3, character.getStatus());
         statement.bindString(4, character.getBirthYear());
         statement.bindString(5, character.getAliases().get(0));
-        statement.bindString(6, character.getOccupations().get(0));
-        statement.bindString(7, character.getResidences().get(0));
+        statement.bindString(6, character.getOccupation());
+        statement.bindString(7, character.getResidence());
         statement.bindString(8, character.getGender());
         statement.bindString(9, character.getActor());
 
-        insertCharacterAssociations(character, database);
-
-
         statement.execute();
+
+        insertCharacterRelations(character, database);
+        insertCharacterAffiliations(database, character);
+
+
     }
 
     public boolean characterNameExists(String name)
@@ -91,26 +94,11 @@ public class CharacterDatabase
         return exists;
     }
 
-    private void insertCharacterAssociations(Character character, SQLiteDatabase database)
+    private void insertCharacterRelations(Character character, SQLiteDatabase database)
     {
         SQLiteStatement statement = database.compileStatement(
-                "insert into CharacterAssociation values (?, ?, ?)"
+                "insert into CharacterRelation values (?, ?)"
         );
-
-        statement.bindLong(3, 1);
-
-        if (character.getAffiliatedCharacters() != null)
-        {
-            for (Character member : character.getAffiliatedCharacters())
-            {
-                statement.bindString(1, character.getName());
-                statement.bindString(2, member.getName());
-
-                statement.execute();
-            }
-        }
-
-        statement.bindLong(3, 0);
 
         if (character.getRelatedCharacters() != null)
         {
@@ -123,6 +111,20 @@ public class CharacterDatabase
             }
         }
 
+    }
+
+    private void insertCharacterAffiliations(SQLiteDatabase database, Character character)
+    {
+        SQLiteStatement statement = database
+                .compileStatement("insert into CharacterAffiliation values (?, ?)");
+
+        for (String affiliation : character.getAffiliations())
+        {
+            statement.bindString(1, character.getName());
+            statement.bindString(2, affiliation);
+
+            statement.execute();
+        }
     }
 
     private Character getCursorCharacter(Cursor cursor)
@@ -146,9 +148,9 @@ public class CharacterDatabase
 
         result.setAliases(singletonList(cursor.getString(4)));
 
-        result.setOccupations(singletonList(cursor.getString(5)));
+        result.setOccupation(cursor.getString(5));
 
-        result.setResidences(singletonList(cursor.getString(6)));
+        result.setResidence(cursor.getString(6));
 
         result.setGender(cursor.getString(7));
 
@@ -158,18 +160,17 @@ public class CharacterDatabase
     }
 
 
-    private void loadCharacterAssociates(Character output, SQLiteDatabase database)
+    private void loadCharacterRelations(Character output, SQLiteDatabase database)
     {
         List<Character> relatedCharacters = new ArrayList<>();
-        List<Character> affiliatedCharacters = new ArrayList<>();
 
         Cursor cursor = database.rawQuery(
                 "select name, photoURL, status, birthYear, alias, " +
-                        "occupation, residence, gender, actor, isAffiliation " +
-                        "from CharacterAssociation " +
+                        "occupation, residence, gender, actor " +
+                        "from CharacterRelation " +
                         "inner join Character on " +
-                        "(Character.name = CharacterAssociation.firstCharacterName or " +
-                        " Character.name = CharacterAssociation.secondCharacterName)" +
+                        "(Character.name = CharacterRelation.firstCharacterName or " +
+                        " Character.name = CharacterRelation.secondCharacterName)" +
                         "where Character.name = ?" +
                         ""
 
@@ -177,27 +178,40 @@ public class CharacterDatabase
 
         while (cursor.moveToNext())
         {
-            Character current = getCursorAssociateCharacter(cursor);
+            Character current = getCursorRelatedCharacter(cursor);
 
-            if (cursor.getInt(cursor.getColumnCount() - 1) == 1)
-            {
-                affiliatedCharacters.add(current);
-            } else
-            {
-                relatedCharacters.add(current);
-            }
+            relatedCharacters.add(current);
         }
 
         output.setRelatedCharacters(relatedCharacters);
-        output.setAffiliatedCharacters(affiliatedCharacters);
 
         cursor.close();
     }
 
-    private Character getCursorAssociateCharacter(Cursor cursor)
+    private void loadCharacterAffiliations(Character character, SQLiteDatabase database)
+    {
+
+        Cursor cursor = database
+                .rawQuery("select affiliated from CharacterAffiliation where characterName = ?",
+                        new String[]{character.getName()});
+
+        List<String> affiliations = new ArrayList<>(cursor.getCount());
+
+        while (cursor.moveToNext())
+        {
+            affiliations.add(cursor.getString(0));
+        }
+
+        character.setAffiliations(affiliations);
+
+        cursor.close();
+    }
+
+    private Character getCursorRelatedCharacter(Cursor cursor)
     {
         return getCursorCharacter(cursor);
     }
+
 
     private SQLiteDatabase getDatabase()
     {
@@ -205,7 +219,7 @@ public class CharacterDatabase
 
         database = context.openOrCreateDatabase("stranger_db", Context.MODE_PRIVATE, null);
 
-//        database.execSQL("drop table if exists CharacterAssociation");
+//        database.execSQL("drop table if exists CharacterRelation");
 //        database.execSQL("drop table if exists Character");
 
         database.execSQL("" +
@@ -223,10 +237,16 @@ public class CharacterDatabase
         );
 
         database.execSQL("" +
-                "create table if not exists CharacterAssociation (" +
-                "firstCharacterName int," +
-                "secondCharacterName int," +
-                "isAffiliation int" +
+                "create table if not exists CharacterRelation (" +
+                "firstCharacterName text," +
+                "secondCharacterName text" +
+                ");"
+        );
+
+        database.execSQL("" +
+                "create table if not exists CharacterAffiliation (" +
+                "CharacterName text," +
+                "affiliated text" +
                 ");"
         );
 

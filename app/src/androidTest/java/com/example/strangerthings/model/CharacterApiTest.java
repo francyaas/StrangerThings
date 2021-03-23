@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
@@ -20,8 +21,6 @@ public class CharacterApiTest
 
         Thread originalThread = Thread.currentThread();
 
-        final AtomicBoolean activated = new AtomicBoolean(false);
-
         api.searchCharacter("eleven", character -> {
 
             Thread callbackThread = Thread.currentThread();
@@ -34,13 +33,11 @@ public class CharacterApiTest
 
             Log.d("whot", character.toString());
 
-            activated.set(true);
+            originalThread.interrupt();
 
         });
 
-        sleep(5000);
-
-        assertTrue(activated.get());
+        timeout(5000);
     }
 
     @Test
@@ -69,24 +66,24 @@ public class CharacterApiTest
                 assertNotNull(bitmap);
 
                 activated.set(true);
+
+                originalThread.interrupt();
             });
 
         });
 
-        sleep(3000);
-
-        assertTrue(activated.get());
-
-
+        timeout(7000);;
     }
 
-    private void sleep(long milliseconds)
+    private void timeout(long milliseconds)
     {
-        try {
+        try
+        {
             Thread.sleep(milliseconds);
-        }
-        catch (InterruptedException ex) {
-            fail("Sleep was interrupted");
+            fail("Operation timed out " + milliseconds + " limit.");
+        } catch (InterruptedException ex)
+        {
+            // Success
         }
     }
 }

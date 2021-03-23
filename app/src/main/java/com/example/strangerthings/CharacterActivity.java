@@ -100,7 +100,7 @@ public class CharacterActivity extends AppCompatActivity
     {
         setCharacterPicture(character);
 
-        affiliationsViewPager.setAdapter(new CharacterAffiliationAdapter(character.getAffiliatedCharacters()));
+        affiliationsViewPager.setAdapter(new CharacterAffiliationAdapter(character.getAffiliations()));
         relationsViewPager.setAdapter(new CharacterRelationAdapter(character.getRelatedCharacters()));
 
         nameTextView.setText(character.getName());
@@ -114,8 +114,8 @@ public class CharacterActivity extends AppCompatActivity
         );
 
         genderTextView.setText(character.getGender());
-        occupationTextView.setText(character.getOccupations().get(0));
-        residenceTextView.setText(character.getResidences().get(0));
+        occupationTextView.setText(character.getOccupation());
+        residenceTextView.setText(character.getResidence());
         actorTextView.setText(String.format(getString(R.string.portrayed_by), character.getActor()));
     }
 

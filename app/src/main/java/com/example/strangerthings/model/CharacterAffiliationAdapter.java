@@ -14,11 +14,11 @@ import java.util.List;
 public class CharacterAffiliationAdapter extends RecyclerView.Adapter<CharacterAffiliationViewHolder>
 {
 
-    private final List<Character> characters;
+    private final List<String> affiliations;
 
-    public CharacterAffiliationAdapter(List<Character> characters)
+    public CharacterAffiliationAdapter(List<String> affiliations)
     {
-        this.characters = characters;
+        this.affiliations = affiliations;
     }
 
     @NonNull
@@ -35,13 +35,13 @@ public class CharacterAffiliationAdapter extends RecyclerView.Adapter<CharacterA
     @Override
     public void onBindViewHolder(@NonNull CharacterAffiliationViewHolder holder, int position)
     {
-        holder.setCharacter(characters.get(position));
+        holder.bind(affiliations.get(position));
     }
 
     @Override
     public int getItemCount()
     {
-        return characters.size();
+        return affiliations.size();
     }
 
 }
@@ -54,7 +54,7 @@ class CharacterAffiliationViewHolder extends RecyclerView.ViewHolder
         super(itemView);
     }
 
-    public void setCharacter(Character character)
+    public void bind(String string)
     {
     }
 }

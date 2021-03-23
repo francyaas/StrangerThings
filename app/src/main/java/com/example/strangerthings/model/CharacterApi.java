@@ -41,7 +41,9 @@ public class CharacterApi
 
             Character result = getCharacterFromJSONObject(characterJSON);
 
-            loadCharacterAssociations(result, characterJSON);
+            loadCharacterRelations(result, characterJSON);
+
+            loadCharacterAffiliations(result, characterJSON);
 
             onResult.accept(result);
 
@@ -187,7 +189,7 @@ public class CharacterApi
         }
     }
 
-    private void loadCharacterAssociations(Character character, JSONObject source)
+    private void loadCharacterRelations(Character character, JSONObject source)
     {
         try
         {
@@ -200,6 +202,27 @@ public class CharacterApi
             throw new RuntimeException(ex);
         }
 
+    }
+
+    private void loadCharacterAffiliations(Character character, JSONObject source)
+    {
+        try
+        {
+            JSONArray array = source.getJSONArray("affiliation");
+
+            List<String> affiliations = new ArrayList<>(array.length());
+
+            for (int i = 0; i < array.length(); i++)
+            {
+                affiliations.add(array.getString(i));
+            }
+
+            character.setAffiliations(affiliations);
+
+        } catch (JSONException ex)
+        {
+            throw new RuntimeException(ex);
+        }
     }
 
     private Character getCharacterFromJSONObject(JSONObject object)
@@ -226,8 +249,8 @@ public class CharacterApi
             character.setActor(object.getString("portrayedBy"));
 
             character.setAliases(readJSONArray(object.getJSONArray("aliases")));
-            character.setOccupations(readJSONArray(object.getJSONArray("occupation")));
-            character.setResidences(readJSONArray(object.getJSONArray("residence")));
+            character.setOccupation(object.getJSONArray("occupation").getString(0));
+            character.setResidence(object.getJSONArray("residence").getString(0));
 
         } catch (JSONException | MalformedURLException ex)
         {

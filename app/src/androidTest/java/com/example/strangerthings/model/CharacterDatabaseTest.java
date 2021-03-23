@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -42,10 +43,21 @@ public class CharacterDatabaseTest
         assertEquals(character.getStatus(), result.getStatus());
         assertEquals(character.getBirthYear(), result.getBirthYear());
         assertEquals(character.getAliases().get(0), result.getAliases().get(0));
-        assertEquals(character.getOccupations().get(0), result.getOccupations().get(0));
-        assertEquals(character.getResidences().get(0), result.getResidences().get(0));
+        assertEquals(character.getOccupation(), result.getOccupation());
+        assertEquals(character.getResidence(), result.getResidence());
         assertEquals(character.getGender(), result.getGender());
         assertEquals(character.getActor(), result.getActor());
+
+        assertNotNull(result.getRelatedCharacters());
+        assertNotNull(result.getAffiliations());
+
+        assertEquals(character.getAffiliations().size(), result.getAffiliations().size());
+
+        for (int i = 0; i < result.getAffiliations().size(); i++)
+        {
+            assertEquals(character.getAffiliations().get(i),
+                    result.getAffiliations().get(i));
+        }
     }
 
     @Test
@@ -92,8 +104,16 @@ public class CharacterDatabaseTest
         character.setBirthYear(prefix + random.nextInt());
         character.setAliases(Collections.singletonList(prefix + random.nextInt()));
 
-        character.setOccupations(Collections.singletonList(prefix + random.nextInt()));
-        character.setResidences(Collections.singletonList(prefix + random.nextInt()));
+        character.setOccupation(prefix + random.nextInt());
+        character.setResidence(prefix + random.nextInt());
+
+        character.setAffiliations(
+                Arrays.asList(
+                        prefix + random.nextInt(),
+                        prefix + random.nextInt(),
+                        prefix + random.nextInt()
+                )
+        );
 
         return character;
     }
