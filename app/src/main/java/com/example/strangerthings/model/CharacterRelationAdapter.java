@@ -1,23 +1,41 @@
 package com.example.strangerthings.model;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.strangerthings.R;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
+import java.util.Objects;
 
 public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRelationViewHolder>
 {
     private final List<Character> characterList;
 
-    public CharacterRelationAdapter(List<Character> characterList)
+    private final Context context;
+
+    public CharacterRelationAdapter(Context context, List<Character> characterList)
     {
         this.characterList = characterList;
+        this.context = context;
     }
 
     @NonNull
@@ -28,13 +46,13 @@ public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRela
                 .from(parent.getContext())
                 .inflate(R.layout.relations_layout, parent, false);
 
-        return new CharacterRelationViewHolder(view);
+        return new CharacterRelationViewHolder(view, context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CharacterRelationViewHolder holder, int position)
     {
-
+        holder.setCharacter(characterList.get(position));
     }
 
     @Override
@@ -46,13 +64,64 @@ public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRela
 
 class CharacterRelationViewHolder extends RecyclerView.ViewHolder
 {
-    public CharacterRelationViewHolder(@NonNull View itemView)
+    private final ImageView pictureImageView;
+
+    private final TextView nameTextView;
+    private final TextView statusAndBirthTextView;
+
+    private final Context context;
+
+    public CharacterRelationViewHolder(@NonNull View itemView, Context context)
     {
         super(itemView);
+
+        this.context = context;
+
+        nameTextView = itemView.findViewById(R.id.textViewCharacterRelationName);
+        statusAndBirthTextView = itemView.findViewById(R.id.textViewCharacterRelationBornStatus);
+        pictureImageView = itemView.findViewById(R.id.imageViewCharacterRelation);
+
+        Objects.requireNonNull(nameTextView);
+        Objects.requireNonNull(statusAndBirthTextView);
     }
+
+    private void downloadImage(URL url)
+    {
+        new Thread(() -> {
+
+            try {
+
+                URLConnection connection =  url.openConnection();
+
+                connection.connect();
+
+                InputStream stream = connection.getInputStream();
+
+                Bitmap bitmap = BitmapFactory.decodeStream(stream);
+
+
+                new Handler(Looper.getMainLooper()).post(() -> {
+
+                    pictureImageView.setImageBitmap(bitmap);
+                });
+
+            }
+            catch (IOException ex) {
+                Log.e("oof", "downloadImage: ", ex);
+            }
+
+        }).start();
+    }
+
 
     public void setCharacter(Character character)
     {
+        nameTextView.setText(character.getName());
 
+        statusAndBirthTextView
+                .setText(String.format(context.getString(R.string.status_born),
+                        character.getStatus(), character.getBirthYear()));
+
+        downloadImage(character.getPhotoUrl());
     }
 }

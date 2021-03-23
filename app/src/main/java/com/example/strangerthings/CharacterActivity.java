@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.strangerthings.model.Character;
@@ -100,8 +101,14 @@ public class CharacterActivity extends AppCompatActivity
     {
         setCharacterPicture(character);
 
-        affiliationsViewPager.setAdapter(new CharacterAffiliationAdapter(character.getAffiliations()));
-        relationsViewPager.setAdapter(new CharacterRelationAdapter(character.getRelatedCharacters()));
+        RecyclerView.Adapter<?> adapter =
+                new CharacterAffiliationAdapter(character.getAffiliations());
+
+        affiliationsViewPager.setAdapter(adapter);
+
+        adapter = new CharacterRelationAdapter( this, character.getRelatedCharacters());
+
+        relationsViewPager.setAdapter(adapter);
 
         nameTextView.setText(character.getName());
         aliasTextView.setText(character.getAliases().get(0));

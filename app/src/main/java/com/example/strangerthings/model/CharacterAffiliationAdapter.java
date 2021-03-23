@@ -3,6 +3,7 @@ package com.example.strangerthings.model;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.strangerthings.R;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CharacterAffiliationAdapter extends RecyclerView.Adapter<CharacterAffiliationViewHolder>
 {
@@ -27,7 +29,7 @@ public class CharacterAffiliationAdapter extends RecyclerView.Adapter<CharacterA
     {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.relations_layout, parent, false);
+                .inflate(R.layout.affiliations_layout, parent, false);
 
         return new CharacterAffiliationViewHolder(view);
     }
@@ -49,13 +51,20 @@ public class CharacterAffiliationAdapter extends RecyclerView.Adapter<CharacterA
 
 class CharacterAffiliationViewHolder extends RecyclerView.ViewHolder
 {
+    private final TextView affiliationTextView;
+
     public CharacterAffiliationViewHolder(@NonNull View itemView)
     {
         super(itemView);
+
+        affiliationTextView = itemView.findViewById(R.id.textViewAffiliation);
+
+        Objects.requireNonNull(affiliationTextView);
     }
 
-    public void bind(String string)
+    public void bind(String text)
     {
+        affiliationTextView.setText(text);
     }
 }
 
