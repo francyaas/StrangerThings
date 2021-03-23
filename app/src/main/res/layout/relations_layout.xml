@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relationsConstraintLayout"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@color/stranger_black">
+    android:layout_width="310dp"
+    android:layout_height="140dp"
+    android:background="@color/stranger_red">
+
+    <ImageView
+        android:id="@+id/imageViewCharacterRelation"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="7dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/st_iconbg" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewCharacterRelationName"
+        style="@style/blackText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/relations"
-        android:textColor="@color/stranger_red"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="45dp"
+        android:text="@string/character_name_relation"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCharacterRelation"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewCharacterRelationBornStatus"
+        style="@style/blackText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/character_status_born_relation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCharacterRelation"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCharacterRelationName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

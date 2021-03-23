@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewPager22" />
+            app:layout_constraintTop_toBottomOf="@+id/viewPagerAffiliations" />
 
         <TextView
             android:id="@+id/textViewAffiliations"
@@ -43,10 +43,10 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewPortrayedBy" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager2"
+            android:id="@+id/viewPagerRelations"
             android:layout_width="310dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="10dp"
             android:background="@color/stranger_red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -54,7 +54,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewRelations" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager22"
+            android:id="@+id/viewPagerAffiliations"
             android:layout_width="310dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
@@ -64,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewAffiliations" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageViewCharacter"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_marginTop="20dp"
@@ -84,14 +84,14 @@
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewCharacter" />
 
         <TextView
             android:id="@+id/textViewAliase"
             style="@style/redText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/aliase"
+            android:text="@string/nickname"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -151,6 +151,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewResidence" />
+
+        <TextView
+            android:id="@+id/textViewMyNameTransparent"
+            style="@style/blackText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/my_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewPagerRelations" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -25,8 +25,10 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="grayText" parent="fontText">
+    <style name="blackText" parent="fontText">
         <item name="android:textColor">@color/stranger_black</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="editTextCharacterName" parent="redText">
@@ -34,7 +36,7 @@
         <item name="android:width">295dp</item>
     </style>
 
-    <style name="buttonSearch" parent="grayText">
+    <style name="buttonSearch" parent="blackText">
         <item name="backgroundColor">@color/stranger_red</item>
         <item name="android:width">290dp</item>
     </style>
