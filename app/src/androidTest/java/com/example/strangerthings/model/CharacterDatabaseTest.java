@@ -1,8 +1,6 @@
 package com.example.strangerthings.model;
 
-import android.app.Instrumentation;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -12,29 +10,92 @@ import org.junit.runner.RunWith;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class CharacterDatabaseTest
 {
-
     @Test
-    public void searchCharacter()
+    public void storeCharacter()
     {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         CharacterDatabase database = new CharacterDatabase(context);
 
-        Character eleven = database.searchCharacter("eleven");
+        Character character = createRandomCharacter();
 
-        if (eleven != null)
-        {
-            Log.d("whot", eleven.toString());
-        }
+        database.insertCharacter(character);
+
+        Character result = database.searchCharacter(character.getName());
+
+        assertNotNull(result);
+
+        assertEquals(character.getName(), result.getName());
+        assertEquals(character.getPhotoUrl(), getURL());
+        assertEquals(character.getStatus(), result.getStatus());
+        assertEquals(character.getBirthYear(), result.getBirthYear());
+        assertEquals(character.getAliases().get(0), result.getAliases().get(0));
+        assertEquals(character.getOccupations().get(0), result.getOccupations().get(0));
+        assertEquals(character.getResidences().get(0), result.getResidences().get(0));
+        assertEquals(character.getGender(), result.getGender());
+        assertEquals(character.getActor(), result.getActor());
+    }
+
+    @Test
+    public void characterNameExists()
+    {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
+        CharacterDatabase subject = new CharacterDatabase(context);
+
+        Character character = createRandomCharacter();
+
+        subject.insertCharacter(character);
+
+        boolean result = subject.characterNameExists(character.getName());
+
+        assertTrue(result);
+
+        result = subject.characterNameExists(character.getName() + "_non_existent");
+
+        assertFalse(result);
+
+        Character output = subject.searchCharacter(character.getName());
+
+        assertNotNull(output);
+    }
+
+    private Character createRandomCharacter()
+    {
+        String prefix = "test_character_";
+
+        Random random = new Random();
+
+        Character character = new Character();
+
+        character.setName(prefix + random.nextInt());
+
+        character.setStatus(prefix + random.nextInt());
+
+        character.setGender(prefix + random.nextInt());
+        character.setActor(prefix + random.nextInt());
+
+        character.setPhotoUrl(getURL());
+
+        character.setBirthYear(prefix + random.nextInt());
+        character.setAliases(Collections.singletonList(prefix + random.nextInt()));
+
+        character.setOccupations(Collections.singletonList(prefix + random.nextInt()));
+        character.setResidences(Collections.singletonList(prefix + random.nextInt()));
+
+        return character;
     }
 
     private URL getURL()
@@ -47,33 +108,5 @@ public class CharacterDatabaseTest
             fail("Invalid Test URL");
             throw new RuntimeException(ex);
         }
-    }
-
-    @Test
-    public void storeCharacter()
-    {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-
-        CharacterDatabase database = new CharacterDatabase(context);
-
-        Character character = new Character();
-
-        character.setName("some_person");
-        character.setPhotoUrl(getURL());
-        character.setStatus("Alive");
-        character.setBirthYear("1917");
-        character.setAliases(Collections.singletonList("bob"));
-        character.setRelatedCharacters(Collections.emptyList());
-        character.setAffiliatedCharacters(Collections.emptyList());
-
-        character.setOccupations(Arrays.asList("be", "dead"));
-        character.setResidences(Arrays.asList("somwhere", "idk"));
-
-        character.setGender("male");
-        character.setActor("idk lmao");
-
-        database.insertCharacter(character);
-
-
     }
 }

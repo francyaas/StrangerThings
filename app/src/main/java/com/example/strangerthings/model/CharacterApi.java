@@ -1,5 +1,7 @@
 package com.example.strangerthings.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import org.json.JSONArray;
@@ -25,19 +27,36 @@ public class CharacterApi
 
     public void searchCharacter(String name, Consumer<Character> onResult)
     {
-        URL url = getSearchURL(name);
+        new Thread(() -> {
 
-        URLConnection connection = performConnection(url);
+            URL url = getSearchURL(name);
 
-        String response = readConnection(connection);
+            URLConnection connection = performConnection(url);
 
-        JSONArray responseJson = getReponseJSONArray(response);
+            String response = readConnection(connection);
 
-        JSONObject characterJSON = getCharacterJSONObject(responseJson);
+            JSONArray responseJson = getReponseJSONArray(response);
 
-        Character result = getCharacterFromJSONObject(characterJSON);
+            JSONObject characterJSON = getCharacterJSONObject(responseJson);
 
-        onResult.accept(result);
+            Character result = getCharacterFromJSONObject(characterJSON);
+
+            onResult.accept(result);
+
+        }).start();
+    }
+
+    public void downloadCharacterPicture(Character character, Consumer<Bitmap> onResult)
+    {
+        new Thread(() -> {
+
+            URLConnection connection = performConnection(character.getPhotoUrl());
+
+            Bitmap map = getBitmapFromConnection(connection);
+
+            onResult.accept(map);
+
+        }).start();
     }
 
 
@@ -156,6 +175,17 @@ public class CharacterApi
         }
 
         return character;
+    }
+
+    private Bitmap getBitmapFromConnection(URLConnection connection)
+    {
+        try
+        {
+            return BitmapFactory.decodeStream(connection.getInputStream());
+        } catch (IOException ex)
+        {
+            throw new RuntimeException(ex);
+        }
     }
 
     private List<String> readJSONArray(JSONArray array) throws JSONException

@@ -31,6 +31,8 @@ public class CharacterDatabase
                 "select * from Character where name like ? limit 1;",
                 new String[]{name});
 
+        cursor.moveToFirst();
+
         Character result = null;
 
         if (cursor.getCount() != 0)
@@ -73,6 +75,22 @@ public class CharacterDatabase
         statement.execute();
     }
 
+    public boolean characterNameExists(String name)
+    {
+        SQLiteDatabase database = getDatabase();
+
+        Cursor cursor = database.rawQuery("select name from Character where name = ?",
+                new String[]{name});
+
+        boolean exists = cursor.getCount() > 0;
+
+        cursor.close();
+
+        database.close();
+
+        return exists;
+    }
+
     private void insertCharacterAssociations(Character character, SQLiteDatabase database)
     {
         SQLiteStatement statement = database.compileStatement(
@@ -81,22 +99,28 @@ public class CharacterDatabase
 
         statement.bindLong(3, 1);
 
-        for (Character member : character.getAffiliatedCharacters())
+        if (character.getAffiliatedCharacters() != null)
         {
-            statement.bindString(1, character.getName());
-            statement.bindString(2, member.getName());
+            for (Character member : character.getAffiliatedCharacters())
+            {
+                statement.bindString(1, character.getName());
+                statement.bindString(2, member.getName());
 
-            statement.execute();
+                statement.execute();
+            }
         }
 
         statement.bindLong(3, 0);
 
-        for (Character member : character.getAffiliatedCharacters())
+        if (character.getRelatedCharacters() != null)
         {
-            statement.bindString(1, character.getName());
-            statement.bindString(2, member.getName());
+            for (Character member : character.getRelatedCharacters())
+            {
+                statement.bindString(1, character.getName());
+                statement.bindString(2, member.getName());
 
-            statement.execute();
+                statement.execute();
+            }
         }
 
     }
@@ -105,30 +129,30 @@ public class CharacterDatabase
     {
         Character result = new Character();
 
-        result.setName(cursor.getString(1));
+        result.setName(cursor.getString(0));
 
         try
         {
-            result.setPhotoUrl(new URL(cursor.getString(2)));
+            result.setPhotoUrl(new URL(cursor.getString(1)));
         } catch (MalformedURLException ex)
         {
             throw new RuntimeException(ex);
         }
 
 
-        result.setStatus(cursor.getString(3));
+        result.setStatus(cursor.getString(2));
 
-        result.setBirthYear(cursor.getString(4));
+        result.setBirthYear(cursor.getString(3));
 
-        result.setAliases(singletonList(cursor.getString(5)));
+        result.setAliases(singletonList(cursor.getString(4)));
 
-        result.setOccupations(singletonList(cursor.getString(6)));
+        result.setOccupations(singletonList(cursor.getString(5)));
 
-        result.setResidences(singletonList(cursor.getString(7)));
+        result.setResidences(singletonList(cursor.getString(6)));
 
-        result.setGender(cursor.getString(8));
+        result.setGender(cursor.getString(7));
 
-        result.setActor(cursor.getString(9));
+        result.setActor(cursor.getString(8));
 
         return result;
     }
@@ -142,7 +166,7 @@ public class CharacterDatabase
         Cursor cursor = database.rawQuery(
                 "select name, photoURL, status, birthYear, alias, " +
                         "occupation, residence, gender, actor, isAffiliation " +
-                        "from CharacterAssociation" +
+                        "from CharacterAssociation " +
                         "inner join Character on " +
                         "(Character.name = CharacterAssociation.firstCharacterName or " +
                         " Character.name = CharacterAssociation.secondCharacterName)" +
