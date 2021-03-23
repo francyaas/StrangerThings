@@ -25,6 +25,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRelationViewHolder>
 {
@@ -32,10 +33,16 @@ public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRela
 
     private final Context context;
 
-    public CharacterRelationAdapter(Context context, List<Character> characterList)
+    private final Consumer<Character> onClick;
+
+    public CharacterRelationAdapter(Context context,
+                                    List<Character> characterList,
+                                    Consumer<Character> onClick
+                                    )
     {
         this.characterList = characterList;
         this.context = context;
+        this.onClick = onClick;
     }
 
     @NonNull
@@ -46,7 +53,7 @@ public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRela
                 .from(parent.getContext())
                 .inflate(R.layout.relations_layout, parent, false);
 
-        return new CharacterRelationViewHolder(view, context);
+        return new CharacterRelationViewHolder(view, context, onClick);
     }
 
     @Override
@@ -71,9 +78,24 @@ class CharacterRelationViewHolder extends RecyclerView.ViewHolder
 
     private final Context context;
 
-    public CharacterRelationViewHolder(@NonNull View itemView, Context context)
+    private Character currentCharacter;
+
+    public CharacterRelationViewHolder(@NonNull View itemView,
+                                       Context context,
+                                       Consumer<Character> onClick)
     {
         super(itemView);
+
+        if (onClick != null)
+        {
+            itemView.setOnClickListener(itself -> {
+
+                if (currentCharacter != null)
+                {
+                    onClick.accept(currentCharacter);
+                }
+            });
+        }
 
         this.context = context;
 
@@ -89,9 +111,9 @@ class CharacterRelationViewHolder extends RecyclerView.ViewHolder
     {
         new Thread(() -> {
 
-            try {
-
-                URLConnection connection =  url.openConnection();
+            try
+            {
+                URLConnection connection = url.openConnection();
 
                 connection.connect();
 
@@ -105,17 +127,18 @@ class CharacterRelationViewHolder extends RecyclerView.ViewHolder
                     pictureImageView.setImageBitmap(bitmap);
                 });
 
-            }
-            catch (IOException ex) {
+            } catch (IOException ex)
+            {
                 Log.e("oof", "downloadImage: ", ex);
             }
 
         }).start();
     }
 
-
     public void setCharacter(Character character)
     {
+        this.currentCharacter = character;
+
         nameTextView.setText(character.getName());
 
         statusAndBirthTextView

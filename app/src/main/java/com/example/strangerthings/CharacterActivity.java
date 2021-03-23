@@ -35,6 +35,7 @@ public class CharacterActivity extends AppCompatActivity
     private TextView actorTextView;
 
     private CharacterApi api;
+    CharacterDatabase database;
 
     private ViewPager2 relationsViewPager;
     private ViewPager2 affiliationsViewPager;
@@ -59,10 +60,15 @@ public class CharacterActivity extends AppCompatActivity
         affiliationsViewPager = findViewById(R.id.viewPagerAffiliations);
         relationsViewPager = findViewById(R.id.viewPagerRelations);
 
-        CharacterDatabase database = new CharacterDatabase(this);
+        database = new CharacterDatabase(this);
 
         String name = loadInput();
 
+        showCharacterFromName(name);
+    }
+
+    private void showCharacterFromName(String name)
+    {
         if (database.characterNameExists(name))
         {
             Character character = database.searchCharacter(name);
@@ -75,13 +81,17 @@ public class CharacterActivity extends AppCompatActivity
             api.searchCharacter(name,
                     character -> {
 
-                        database.insertCharacter(character);
+                        Objects.requireNonNull(character);
+
+                        if (!database.characterNameExists(character.getName()))
+                        {
+                            database.insertCharacter(character);
+                        }
 
                         runOnUiThread(() -> displayCharacter(character));
                     }
             );
         }
-
     }
 
     private String loadInput()
@@ -106,7 +116,12 @@ public class CharacterActivity extends AppCompatActivity
 
         affiliationsViewPager.setAdapter(adapter);
 
-        adapter = new CharacterRelationAdapter( this, character.getRelatedCharacters());
+        adapter = new CharacterRelationAdapter(
+                this,
+                character.getRelatedCharacters(),
+
+                clickedCharacter -> showCharacterFromName(clickedCharacter.getName())
+        );
 
         relationsViewPager.setAdapter(adapter);
 

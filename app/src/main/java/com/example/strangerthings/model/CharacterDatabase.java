@@ -160,7 +160,7 @@ public class CharacterDatabase
     }
 
 
-    private void loadCharacterRelations(Character output, SQLiteDatabase database)
+    private void loadCharacterRelations(Character character, SQLiteDatabase database)
     {
         List<Character> relatedCharacters = new ArrayList<>();
 
@@ -174,16 +174,20 @@ public class CharacterDatabase
                         "where Character.name = ?" +
                         ""
 
-                , new String[]{output.getName()});
+                , new String[]{character.getName()});
 
         while (cursor.moveToNext())
         {
             Character current = getCursorRelatedCharacter(cursor);
 
-            relatedCharacters.add(current);
+            if (!current.getName().equals(character.getName()))
+            {
+                relatedCharacters.add(current);
+            }
+
         }
 
-        output.setRelatedCharacters(relatedCharacters);
+        character.setRelatedCharacters(relatedCharacters);
 
         cursor.close();
     }
@@ -219,8 +223,8 @@ public class CharacterDatabase
 
         database = context.openOrCreateDatabase("stranger_db", Context.MODE_PRIVATE, null);
 
-//        database.execSQL("drop table if exists CharacterRelation");
-//        database.execSQL("drop table if exists Character");
+        database.execSQL("drop table if exists CharacterRelation");
+        database.execSQL("drop table if exists Character");
 
         database.execSQL("" +
                 "create table if not exists Character (" +
