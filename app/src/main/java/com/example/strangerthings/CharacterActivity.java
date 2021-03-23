@@ -78,20 +78,20 @@ public class CharacterActivity extends AppCompatActivity
             displayCharacter(character);
         } else
         {
-            api.searchCharacter(name,
-                    character -> {
-
-                        Objects.requireNonNull(character);
-
-                        if (!database.characterNameExists(character.getName()))
-                        {
-                            database.insertCharacter(character);
-                        }
-
-                        runOnUiThread(() -> displayCharacter(character));
-                    }
-            );
+            api.searchCharacter(name, this::onApiCharacterSearched);
         }
+    }
+
+    private void onApiCharacterSearched(Character character)
+    {
+        Objects.requireNonNull(character);
+
+        if (!database.characterNameExists(character.getName()))
+        {
+            database.insertCharacter(character);
+        }
+
+        runOnUiThread(() -> displayCharacter(character));
     }
 
     private String loadInput()
@@ -107,6 +107,11 @@ public class CharacterActivity extends AppCompatActivity
         return characterName;
     }
 
+    private void onCharacterSelected(Character clickedCharacter)
+    {
+        showCharacterFromName(clickedCharacter.getName());
+    }
+
     private void displayCharacter(Character character)
     {
         setCharacterPicture(character);
@@ -119,8 +124,7 @@ public class CharacterActivity extends AppCompatActivity
         adapter = new CharacterRelationAdapter(
                 this,
                 character.getRelatedCharacters(),
-
-                clickedCharacter -> showCharacterFromName(clickedCharacter.getName())
+                this::onCharacterSelected
         );
 
         relationsViewPager.setAdapter(adapter);
