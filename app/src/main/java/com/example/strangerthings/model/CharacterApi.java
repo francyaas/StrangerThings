@@ -41,6 +41,8 @@ public class CharacterApi
 
             Character result = getCharacterFromJSONObject(characterJSON);
 
+            loadCharacterAssociations(result, characterJSON);
+
             onResult.accept(result);
 
         }).start();
@@ -57,6 +59,21 @@ public class CharacterApi
             onResult.accept(map);
 
         }).start();
+    }
+
+    private Character searchAssociatedCharacter(String name)
+    {
+        URL url = getSearchURL(name);
+
+        URLConnection connection = performConnection(url);
+
+        String response = readConnection(connection);
+
+        JSONArray array = getReponseJSONArray(response);
+
+        JSONObject object = getCharacterJSONObject(array);
+
+        return getCharacterFromJSONObject(object);
     }
 
 
@@ -150,19 +167,19 @@ public class CharacterApi
         }
     }
 
-    private void loadCharacterAssociation(Character character, JSONObject characterObject)
+    private List<Character> getCharacterAssociations(JSONArray names)
     {
         try
         {
-            JSONArray array;
+            List<Character> characters = new ArrayList<>();
 
-            array = characterObject.getJSONArray("associated");
-
-            for (int i = 0; i < array.length(); i++)
+            for (int i = 0; i < names.length(); i++)
             {
-                String name = array.get(i).toString();
+                String name = names.get(i).toString();
+                characters.add(searchAssociatedCharacter(name));
             }
 
+            return characters;
 
         } catch (JSONException ex)
         {
@@ -170,9 +187,33 @@ public class CharacterApi
         }
     }
 
+    private void loadCharacterAssociations(Character character, JSONObject source)
+    {
+        try
+        {
+            JSONArray related = source.getJSONArray("otherRelations");
+
+            character.setRelatedCharacters(getCharacterAssociations(related));
+
+        } catch (JSONException ex)
+        {
+            throw new RuntimeException(ex);
+        }
+
+    }
+
     private Character getCharacterFromJSONObject(JSONObject object)
     {
         Character character = new Character();
+
+        // api is broken lmao
+
+        try {
+            character.setBirthYear(object.getString("born"));
+        }
+        catch (JSONException ex) {
+            character.setBirthYear("unknown");
+        }
 
         try
         {
@@ -181,7 +222,6 @@ public class CharacterApi
             character.setPhotoUrl(new URL(object.getString("photo")));
 
             character.setStatus(object.getString("status"));
-            character.setBirthYear(object.getString("born"));
             character.setGender(object.getString("gender"));
             character.setActor(object.getString("portrayedBy"));
 

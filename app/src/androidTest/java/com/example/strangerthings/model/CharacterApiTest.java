@@ -28,7 +28,6 @@ public class CharacterApiTest
 
             assertNotSame(originalThread, callbackThread);
 
-
             assertNotNull(character);
             assertNotNull(character.getActor());
             assertNotNull(character.getName());
@@ -39,7 +38,7 @@ public class CharacterApiTest
 
         });
 
-        sleep(1000);
+        sleep(5000);
 
         assertTrue(activated.get());
     }
