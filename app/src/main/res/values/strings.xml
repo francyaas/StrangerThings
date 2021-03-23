@@ -6,11 +6,11 @@
 
     <string name="name">CHARACTER NAME</string>
     <string name="nickname">NICKNAME</string>
-    <string name="status_born">STATUS, BORN</string>
+    <string name="status_born">%s, %s</string>
     <string name="gender">GENDER</string>
     <string name="occupation">OCCUPATION</string>
     <string name="residence">RESIDENCE</string>
-    <string name="portrayed_by">PORTRAYED BY</string>
+    <string name="portrayed_by">PORTRAYED BY %s</string>
 
     <string name="affiliations">AFFILIATIONS</string>
     <string name="affiliation">AFFILIATION</string>

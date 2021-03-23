@@ -150,6 +150,26 @@ public class CharacterApi
         }
     }
 
+    private void loadCharacterAssociation(Character character, JSONObject characterObject)
+    {
+        try
+        {
+            JSONArray array;
+
+            array = characterObject.getJSONArray("associated");
+
+            for (int i = 0; i < array.length(); i++)
+            {
+                String name = array.get(i).toString();
+            }
+
+
+        } catch (JSONException ex)
+        {
+            throw new RuntimeException(ex);
+        }
+    }
+
     private Character getCharacterFromJSONObject(JSONObject object)
     {
         Character character = new Character();
