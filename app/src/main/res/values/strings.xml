@@ -5,7 +5,7 @@
     <string name="my_name">YASMIN FRANCISQUETTI</string>
 
     <string name="name">CHARACTER NAME</string>
-    <string name="aliase">ALIASE</string>
+    <string name="nickname">NICKNAME</string>
     <string name="status_born">STATUS, BORN</string>
     <string name="gender">GENDER</string>
     <string name="occupation">OCCUPATION</string>
@@ -17,6 +17,5 @@
 
     <string name="relations">RELATIONS</string>
     <string name="character_name_relation">CHARACTER NAME</string>
-    <string name="character_status_relation">STATUS</string>
-    <string name="character_born_relation">BORN</string>
+    <string name="character_status_born_relation">STATUS, BORN</string>
 </resources>
