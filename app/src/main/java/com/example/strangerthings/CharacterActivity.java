@@ -73,6 +73,7 @@ public class CharacterActivity extends AppCompatActivity
         {
             Character character = database.searchCharacter(name);
 
+            // todo: check if not found
             Objects.requireNonNull(character);
 
             displayCharacter(character);
@@ -84,6 +85,7 @@ public class CharacterActivity extends AppCompatActivity
 
     private void onApiCharacterSearched(Character character)
     {
+        // todo: check if not found
         Objects.requireNonNull(character);
 
         if (!database.characterNameExists(character.getName()))

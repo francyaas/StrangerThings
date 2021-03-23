@@ -37,13 +37,18 @@ public class CharacterApi
 
             JSONArray responseJson = getReponseJSONArray(response);
 
+            Character result = null;
+
             JSONObject characterJSON = getCharacterJSONObject(responseJson);
 
-            Character result = getCharacterFromJSONObject(characterJSON);
+            if (characterJSON != null)
+            {
+                result = getCharacterFromJSONObject(characterJSON);
 
-            loadCharacterRelations(result, characterJSON);
+                loadCharacterRelations(result, characterJSON);
 
-            loadCharacterAffiliations(result, characterJSON);
+                loadCharacterAffiliations(result, characterJSON);
+            }
 
             onResult.accept(result);
 
@@ -63,7 +68,7 @@ public class CharacterApi
         }).start();
     }
 
-    private Character searchAssociatedCharacter(String name)
+    private Character searchRelatedCharacters(String name)
     {
         URL url = getSearchURL(name);
 
@@ -73,9 +78,17 @@ public class CharacterApi
 
         JSONArray array = getReponseJSONArray(response);
 
+
+        Character result = null;
+
         JSONObject object = getCharacterJSONObject(array);
 
-        return getCharacterFromJSONObject(object);
+        if (object != null)
+        {
+            result = getCharacterFromJSONObject(object);
+        }
+
+        return result;
     }
 
 
@@ -162,7 +175,8 @@ public class CharacterApi
     {
         try
         {
-            return responseArray.getJSONObject(0);
+            return responseArray.length() > 0 ? responseArray.getJSONObject(0) : null;
+
         } catch (JSONException ex)
         {
             throw new RuntimeException(ex);
@@ -178,7 +192,13 @@ public class CharacterApi
             for (int i = 0; i < names.length(); i++)
             {
                 String name = names.get(i).toString();
-                characters.add(searchAssociatedCharacter(name));
+
+                Character related = searchRelatedCharacters(name);
+
+                if (related != null)
+                {
+                    characters.add(related);
+                }
             }
 
             return characters;
