@@ -10,8 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.singletonList;
-
 public class CharacterDatabase
 {
     private final Context context;
@@ -64,7 +62,7 @@ public class CharacterDatabase
         statement.bindString(2, character.getPhotoUrl().toString());
         statement.bindString(3, character.getStatus());
         statement.bindString(4, character.getBirthYear());
-        statement.bindString(5, character.getAliases().get(0));
+        statement.bindString(5, character.getAlias());
         statement.bindString(6, character.getOccupation());
         statement.bindString(7, character.getResidence());
         statement.bindString(8, character.getGender());
@@ -146,7 +144,7 @@ public class CharacterDatabase
 
         result.setBirthYear(cursor.getString(3));
 
-        result.setAliases(singletonList(cursor.getString(4)));
+        result.setAlias(cursor.getString(4));
 
         result.setOccupation(cursor.getString(5));
 
@@ -223,8 +221,8 @@ public class CharacterDatabase
 
         database = context.openOrCreateDatabase("stranger_db", Context.MODE_PRIVATE, null);
 
-        database.execSQL("drop table if exists CharacterRelation");
-        database.execSQL("drop table if exists Character");
+//        database.execSQL("drop table if exists CharacterRelation");
+//        database.execSQL("drop table if exists Character");
 
         database.execSQL("" +
                 "create table if not exists Character (" +

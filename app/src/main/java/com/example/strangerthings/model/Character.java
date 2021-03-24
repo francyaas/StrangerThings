@@ -14,7 +14,7 @@ public class Character
 
     private String birthYear;
 
-    private List<String> aliases;
+    private String alias;
 
     private List<Character> relatedCharacters;
 
@@ -66,14 +66,14 @@ public class Character
         this.birthYear = birthYear;
     }
 
-    public List<String> getAliases()
+    public String getAlias()
     {
-        return aliases;
+        return alias;
     }
 
-    public void setAliases(List<String> aliases)
+    public void setAlias(String alias)
     {
-        this.aliases = aliases;
+        this.alias = alias;
     }
 
     public List<Character> getRelatedCharacters()
@@ -144,7 +144,7 @@ public class Character
                 ", photoUrl=" + photoUrl +
                 ", status='" + status + '\'' +
                 ", birthYear='" + birthYear + '\'' +
-                ", aliases=" + aliases +
+                ", aliases=" + alias +
                 ", relatedCharacters=" + relatedCharacters +
                 ", affiliations=" + affiliations +
                 ", occupation='" + occupation + '\'' +

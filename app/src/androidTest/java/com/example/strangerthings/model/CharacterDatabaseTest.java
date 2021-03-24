@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
@@ -42,7 +41,7 @@ public class CharacterDatabaseTest
         assertEquals(character.getPhotoUrl(), getURL());
         assertEquals(character.getStatus(), result.getStatus());
         assertEquals(character.getBirthYear(), result.getBirthYear());
-        assertEquals(character.getAliases().get(0), result.getAliases().get(0));
+        assertEquals(character.getAlias(), result.getAlias());
         assertEquals(character.getOccupation(), result.getOccupation());
         assertEquals(character.getResidence(), result.getResidence());
         assertEquals(character.getGender(), result.getGender());
@@ -102,7 +101,7 @@ public class CharacterDatabaseTest
         character.setPhotoUrl(getURL());
 
         character.setBirthYear(prefix + random.nextInt());
-        character.setAliases(Collections.singletonList(prefix + random.nextInt()));
+        character.setAlias(prefix + random.nextInt());
 
         character.setOccupation(prefix + random.nextInt());
         character.setResidence(prefix + random.nextInt());

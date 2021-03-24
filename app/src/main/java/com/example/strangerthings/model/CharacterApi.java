@@ -258,8 +258,10 @@ public class CharacterApi
 
             if (index != -1 && index != birth.length() - 1)
             {
-                character.setBirthYear(birth.substring(index));
+                birth = birth.substring(index);
             }
+
+            character.setBirthYear(birth);
         }
         catch (JSONException ex) {
             character.setBirthYear("unknown");
@@ -277,13 +279,18 @@ public class CharacterApi
 
             if (index != -1)
             {
-                character.setStatus(status.substring(0, index));
+                status = status.substring(0, index);
             }
+
+            character.setStatus(status);
 
             character.setGender(object.getString("gender"));
             character.setActor(object.getString("portrayedBy"));
 
-            character.setAliases(readJSONArray(object.getJSONArray("aliases")));
+            JSONArray array = object.getJSONArray("aliases");
+
+            character.setAlias(array.length() > 0 ? array.getString(0) : "");
+
             character.setOccupation(object.getJSONArray("occupation").getString(0));
             character.setResidence(object.getJSONArray("residence").getString(0));
 
@@ -304,18 +311,6 @@ public class CharacterApi
         {
             throw new RuntimeException(ex);
         }
-    }
-
-    private List<String> readJSONArray(JSONArray array) throws JSONException
-    {
-        List<String> list = new ArrayList<>(array.length());
-
-        for (int i = 0; i < array.length(); i++)
-        {
-            list.add(array.getString(i));
-        }
-
-        return list;
     }
 
 }

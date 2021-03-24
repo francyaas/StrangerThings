@@ -1,6 +1,5 @@
 package com.example.strangerthings.model;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,7 +19,6 @@ import com.example.strangerthings.R;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -122,10 +120,9 @@ class CharacterRelationViewHolder extends RecyclerView.ViewHolder
                 Bitmap bitmap = BitmapFactory.decodeStream(stream);
 
 
-                new Handler(Looper.getMainLooper()).post(() -> {
-
-                    pictureImageView.setImageBitmap(bitmap);
-                });
+                new Handler(Looper.getMainLooper()).post(
+                        () -> pictureImageView.setImageBitmap(bitmap)
+                );
 
             } catch (IOException ex)
             {

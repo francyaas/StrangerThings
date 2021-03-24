@@ -6,10 +6,8 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class CharacterApiTest
@@ -28,13 +26,36 @@ public class CharacterApiTest
             assertNotSame(originalThread, callbackThread);
 
             assertNotNull(character);
-            assertNotNull(character.getActor());
             assertNotNull(character.getName());
+            assertNotNull(character.getActor());
+            assertNotNull(character.getPhotoUrl());
+            assertNotNull(character.getStatus());
+            assertNotNull(character.getBirthYear());
+            assertNotNull(character.getAlias());
+
+            assertNotNull(character.getRelatedCharacters());
+
+            for (Character member: character.getRelatedCharacters())
+            {
+                assertNotNull(member);
+            }
+
+            assertNotNull(character.getAffiliations());
+
+            for (String affiliation : character.getAffiliations())
+            {
+                assertNotNull(affiliation);
+            }
+
+            assertNotNull(character.getOccupation());
+            assertNotNull(character.getResidence());
+            assertNotNull(character.getGender());
+
+            assertNotNull(character.getActor());
 
             Log.d("whot", character.toString());
 
             originalThread.interrupt();
-
         });
 
         timeout(5000);
@@ -72,7 +93,7 @@ public class CharacterApiTest
 
         });
 
-        timeout(7000);;
+        timeout(7000);
     }
 
     private void timeout(long milliseconds)

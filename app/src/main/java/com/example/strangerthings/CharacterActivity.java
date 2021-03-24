@@ -132,7 +132,7 @@ public class CharacterActivity extends AppCompatActivity
         relationsViewPager.setAdapter(adapter);
 
         nameTextView.setText(character.getName());
-        aliasTextView.setText(character.getAliases().get(0));
+        aliasTextView.setText(character.getAlias());
 
         statusAndBirthDayTextView.setText(
                 String.format(getString(R.string.status_born),
