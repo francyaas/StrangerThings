@@ -252,7 +252,14 @@ public class CharacterApi
         // api is broken lmao
 
         try {
-            character.setBirthYear(object.getString("born"));
+            String birth = object.getString("born");
+
+            int index = birth.lastIndexOf(' ');
+
+            if (index != -1 && index != birth.length() - 1)
+            {
+                character.setBirthYear(birth.substring(index));
+            }
         }
         catch (JSONException ex) {
             character.setBirthYear("unknown");
@@ -264,7 +271,15 @@ public class CharacterApi
 
             character.setPhotoUrl(new URL(object.getString("photo")));
 
-            character.setStatus(object.getString("status"));
+            String status = object.getString("status");
+
+            int index = status.indexOf(' ');
+
+            if (index != -1)
+            {
+                character.setStatus(status.substring(0, index));
+            }
+
             character.setGender(object.getString("gender"));
             character.setActor(object.getString("portrayedBy"));
 
