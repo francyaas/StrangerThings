@@ -14,7 +14,9 @@ import com.example.strangerthings.model.CharacterAffiliationAdapter;
 import com.example.strangerthings.model.CharacterApi;
 import com.example.strangerthings.model.CharacterDatabase;
 import com.example.strangerthings.model.CharacterRelationAdapter;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.io.NotActiveException;
 import java.util.Objects;
 
 public class CharacterActivity extends AppCompatActivity
@@ -44,9 +46,17 @@ public class CharacterActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_character);
 
-        api = new CharacterApi();
+        try
+        {
+            api = new CharacterApi(this);
+        } catch (NotActiveException ex)
+        {
+            api = null;
+        }
 
         nameTextView = findViewById(R.id.textViewCharacterName);
         aliasTextView = findViewById(R.id.textViewAliase);
@@ -64,7 +74,19 @@ public class CharacterActivity extends AppCompatActivity
 
         String name = loadInput();
 
-        showCharacterFromName(name);
+        try
+        {
+            showCharacterFromName(name);
+        } catch (RuntimeException ex)
+        {
+            showError("Something went wrong x~x");
+        }
+    }
+
+    private void showError(String message)
+    {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
+
     }
 
     private void showCharacterFromName(String name)
@@ -73,11 +95,8 @@ public class CharacterActivity extends AppCompatActivity
         {
             Character character = database.searchCharacter(name);
 
-            // todo: check if not found
-            Objects.requireNonNull(character);
-
             displayCharacter(character);
-        } else
+        } else if (api != null)
         {
             api.searchCharacter(name, this::onApiCharacterSearched);
         }
@@ -85,10 +104,7 @@ public class CharacterActivity extends AppCompatActivity
 
     private void onApiCharacterSearched(Character character)
     {
-        // todo: check if not found
-        Objects.requireNonNull(character);
-
-        if (!database.characterNameExists(character.getName()))
+        if (character != null && !database.characterNameExists(character.getName()))
         {
             database.insertCharacter(character);
         }
@@ -116,6 +132,13 @@ public class CharacterActivity extends AppCompatActivity
 
     private void displayCharacter(Character character)
     {
+        if (character == null)
+        {
+            showError("Character not found");
+            finish();
+            return;
+        }
+
         setCharacterPicture(character);
 
         RecyclerView.Adapter<?> adapter =
@@ -149,8 +172,11 @@ public class CharacterActivity extends AppCompatActivity
 
     private void setCharacterPicture(Character character)
     {
-        api.downloadCharacterPicture(character,
-                bitmap -> runOnUiThread(() -> pictureImageView.setImageBitmap(bitmap)));
+        if (api != null)
+        {
+            api.downloadCharacterPicture(character,
+                    bitmap -> runOnUiThread(() -> pictureImageView.setImageBitmap(bitmap)));
+        }
     }
 
 

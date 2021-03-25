@@ -1,9 +1,14 @@
 package com.example.strangerthings.model;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
+
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Test;
 
+import java.io.NotActiveException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertNotNull;
@@ -12,10 +17,30 @@ import static org.junit.Assert.fail;
 
 public class CharacterApiTest
 {
+
+    private CharacterApi getSubject()
+    {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
+        try
+        {
+            return new CharacterApi(context);
+        } catch (NotActiveException ex)
+        {
+
+            assertNotNull(ex.getMessage());
+
+            fail("No internet access to ensure api connection: " + ex);
+
+            throw new RuntimeException(ex);
+        }
+
+    }
+
     @Test
     public void searchCharacter()
     {
-        CharacterApi api = new CharacterApi();
+        CharacterApi api = getSubject();
 
         Thread originalThread = Thread.currentThread();
 
@@ -35,7 +60,7 @@ public class CharacterApiTest
 
             assertNotNull(character.getRelatedCharacters());
 
-            for (Character member: character.getRelatedCharacters())
+            for (Character member : character.getRelatedCharacters())
             {
                 assertNotNull(member);
             }
@@ -64,7 +89,7 @@ public class CharacterApiTest
     @Test
     public void downloadCharacterPicture()
     {
-        final CharacterApi subject = new CharacterApi();
+        final CharacterApi subject = getSubject();
 
         final Thread originalThread = Thread.currentThread();
 

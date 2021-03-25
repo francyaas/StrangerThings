@@ -1,7 +1,10 @@
 package com.example.strangerthings.model;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 
 import org.json.JSONArray;
@@ -11,6 +14,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.NotActiveException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,8 +25,18 @@ import java.util.function.Consumer;
 
 public class CharacterApi
 {
-    public CharacterApi()
+    public CharacterApi(Context context) throws NotActiveException
     {
+        ConnectivityManager manager;
+
+        manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo info = manager.getActiveNetworkInfo();
+
+        if (info == null || !info.isConnected())
+        {
+            throw new NotActiveException("No internet connection");
+        }
     }
 
     public void searchCharacter(String name, Consumer<Character> onResult)
@@ -251,7 +265,8 @@ public class CharacterApi
 
         // api is broken lmao
 
-        try {
+        try
+        {
             String birth = object.getString("born");
 
             int index = birth.lastIndexOf(' ');
@@ -262,8 +277,8 @@ public class CharacterApi
             }
 
             character.setBirthYear(birth);
-        }
-        catch (JSONException ex) {
+        } catch (JSONException ex)
+        {
             character.setBirthYear("unknown");
         }
 
