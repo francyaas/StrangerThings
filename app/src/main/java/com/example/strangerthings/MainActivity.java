@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -35,8 +38,26 @@ public class MainActivity extends AppCompatActivity
     {
         Intent starter = new Intent(this, CharacterActivity.class);
 
-        starter.putExtra(CharacterActivity.NAME_EXTRA_KEY, name);
+        starter.putExtra(CharacterActivity.NAME_INPUT_KEY, name);
 
-        startActivity(starter);
+        startActivityForResult(starter, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null)
+        {
+            String message = data.getStringExtra(CharacterActivity.ERROR_MESSAGE_OUTPUT_KEY);
+
+            if (message != null)
+            {
+                Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT)
+                        .setAction("action", null).show();
+            }
+        }
+
     }
 }

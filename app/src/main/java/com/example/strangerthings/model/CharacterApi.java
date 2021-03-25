@@ -131,9 +131,9 @@ public class CharacterApi
         {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            connection.setConnectTimeout(1000);
+            connection.setConnectTimeout(3000);
 
-            connection.setReadTimeout(1000);
+            connection.setReadTimeout(3000);
 
             connection.connect();
 

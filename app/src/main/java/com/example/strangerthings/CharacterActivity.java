@@ -14,14 +14,14 @@ import com.example.strangerthings.model.CharacterAffiliationAdapter;
 import com.example.strangerthings.model.CharacterApi;
 import com.example.strangerthings.model.CharacterDatabase;
 import com.example.strangerthings.model.CharacterRelationAdapter;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.NotActiveException;
 import java.util.Objects;
 
 public class CharacterActivity extends AppCompatActivity
 {
-    public static final String NAME_EXTRA_KEY = "character_name";
+    public static final String NAME_INPUT_KEY = "character_name";
+    public static final String ERROR_MESSAGE_OUTPUT_KEY = "error-message";
 
     private TextView nameTextView;
 
@@ -79,14 +79,19 @@ public class CharacterActivity extends AppCompatActivity
             showCharacterFromName(name);
         } catch (RuntimeException ex)
         {
-            showError("Something went wrong x~x");
+            finishWithError("Something went wrong x~x");
         }
     }
 
-    private void showError(String message)
+    private void finishWithError(String message)
     {
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
+        Intent intent = getIntent();
 
+        intent.putExtra(ERROR_MESSAGE_OUTPUT_KEY, message);
+
+        setResult(RESULT_OK, intent);
+
+        finish();
     }
 
     private void showCharacterFromName(String name)
@@ -118,7 +123,7 @@ public class CharacterActivity extends AppCompatActivity
 
         Objects.requireNonNull(source);
 
-        String characterName = source.getStringExtra(NAME_EXTRA_KEY);
+        String characterName = source.getStringExtra(NAME_INPUT_KEY);
 
         Objects.requireNonNull(characterName);
 
@@ -134,8 +139,7 @@ public class CharacterActivity extends AppCompatActivity
     {
         if (character == null)
         {
-            showError("Character not found");
-            finish();
+            finishWithError("Character not found");
             return;
         }
 

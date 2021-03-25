@@ -1,7 +1,6 @@
 package com.example.strangerthings.model;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
