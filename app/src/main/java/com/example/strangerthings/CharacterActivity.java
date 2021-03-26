@@ -104,6 +104,9 @@ public class CharacterActivity extends AppCompatActivity
         } else if (api != null)
         {
             api.searchCharacter(name, this::onApiCharacterSearched);
+        } else
+        {
+           finishWithError("Character not found");
         }
     }
 
