@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StrangerThings">
         <activity android:name=".CharacterActivity"></activity>
-        <activity android:name=".LoadingActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
