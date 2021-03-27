@@ -14,8 +14,6 @@ public class MainActivity extends AppCompatActivity
 {
     EditText editTextCharacterName;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -28,8 +26,6 @@ public class MainActivity extends AppCompatActivity
     public void Search(View buttonSearch)
     {
         String name = editTextCharacterName.getText().toString();
-
-        // if u have any validation to do, this is a nice place to do so.
 
         startCharacterActivity(name);
     }
