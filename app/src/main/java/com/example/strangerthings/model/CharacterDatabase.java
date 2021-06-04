@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,14 +17,15 @@ public class CharacterDatabase
 {
     private final Context context;
 
-    public CharacterDatabase(Context context)
+    public CharacterDatabase(@NonNull Context context)
     {
         this.context = context;
 
         getDatabase();
     }
 
-    public Character searchCharacter(String name)
+    @Nullable
+    public Character searchCharacter(@NonNull String name)
     {
         SQLiteDatabase database = getDatabase();
 
@@ -43,19 +47,27 @@ public class CharacterDatabase
 
         cursor.close();
 
-        database.close();
 
         return result;
     }
 
-    public void insertCharacter(Character character)
+    public void insertCharacter(@NonNull Character character)
     {
         SQLiteDatabase database = getDatabase();
 
+        insertCharacterData(database, character);
+        insertCharacterRelated(database, character);
+        insertCharacterRelations(database, character);
+        insertCharacterAffiliations(database, character);
+    }
+
+    private void insertCharacterData(SQLiteDatabase database, @NonNull Character character)
+    {
+        database.execSQL("delete from Character where name = ?", new String[]{character.getName()});
 
         SQLiteStatement statement = database.compileStatement(
                 "insert into Character " +
-                        "values (?, ?, ?, ?, ?, ?, ?, ? , ?)"
+                        "values (?, ?, ?, ?, ?, ?, ?, ? , ?, ?)"
         );
 
         statement.bindString(1, character.getName());
@@ -67,32 +79,57 @@ public class CharacterDatabase
         statement.bindString(7, character.getResidence());
         statement.bindString(8, character.getGender());
         statement.bindString(9, character.getActor());
+        statement.bindLong(10, 0);
 
         statement.execute();
-
-        insertCharacterRelations(character, database);
-        insertCharacterAffiliations(database, character);
-
-
     }
 
-    public boolean characterNameExists(String name)
+
+    /**
+     * Finds whether a character exists or not.
+     * @param name The name of the character to search
+     * @return true if the character has been inserted with its relations.
+     */
+    public boolean hasCharacter(@NonNull String name)
     {
         SQLiteDatabase database = getDatabase();
 
-        Cursor cursor = database.rawQuery("select name from Character where name = ?",
-                new String[]{name});
+        try (Cursor cursor = database.rawQuery(
+                "select name from Character where name = ? and withRelations",
+                new String[]{name})) {
 
-        boolean exists = cursor.getCount() > 0;
+            return cursor.getCount() > 0;
 
-        cursor.close();
-
-        database.close();
-
-        return exists;
+        }
     }
 
-    private void insertCharacterRelations(Character character, SQLiteDatabase database)
+    private boolean characterNameExists(@NonNull String name, SQLiteDatabase database)
+    {
+
+        try (Cursor cursor = database.rawQuery("select name from Character where name = ?",
+                new String[]{name})) {
+
+            return cursor.getCount() > 0;
+
+        }
+
+    }
+
+    private void insertCharacterRelated(SQLiteDatabase database, Character character) {
+
+        for (Character related : character.getRelatedCharacters()) {
+            if (!characterNameExists(related.getName(), database)) {
+                insertCharacterData(database, related);
+            }
+        }
+
+        database.execSQL("update Character set withRelations = 1 where name = ?",
+                new String[]{ character.getName() });
+
+    }
+
+
+    private void insertCharacterRelations(SQLiteDatabase database, Character character)
     {
         SQLiteStatement statement = database.compileStatement(
                 "insert into CharacterRelation values (?, ?)"
@@ -165,14 +202,16 @@ public class CharacterDatabase
         Cursor cursor = database.rawQuery(
                 "select name, photoURL, status, birthYear, alias, " +
                         "occupation, residence, gender, actor " +
-                        "from CharacterRelation " +
-                        "inner join Character on " +
-                        "(Character.name = CharacterRelation.firstCharacterName or " +
-                        " Character.name = CharacterRelation.secondCharacterName)" +
-                        "where Character.name = ?" +
+                        "from Character where name in (" +
+                        "select firstCharacterName from CharacterRelation where " +
+                        "secondCharacterName = ?" +
+                        "union " +
+                        "select secondCharacterName from CharacterRelation where " +
+                        "firstCharacterName = ?" +
+                        ") " +
                         ""
 
-                , new String[]{character.getName()});
+                , new String[]{character.getName(), character.getName()});
 
         while (cursor.moveToNext())
         {
@@ -234,7 +273,8 @@ public class CharacterDatabase
                 "occupation text," +
                 "residence text," +
                 "gender text," +
-                "actor text" +
+                "actor text," +
+                "withRelations number" +
                 ");"
         );
 

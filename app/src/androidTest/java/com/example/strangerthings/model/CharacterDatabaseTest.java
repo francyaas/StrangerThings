@@ -70,11 +70,11 @@ public class CharacterDatabaseTest
 
         subject.insertCharacter(character);
 
-        boolean result = subject.characterNameExists(character.getName());
+        boolean result = subject.hasCharacter(character.getName());
 
         assertTrue(result);
 
-        result = subject.characterNameExists(character.getName() + "_non_existent");
+        result = subject.hasCharacter(character.getName() + "_non_existent");
 
         assertFalse(result);
 

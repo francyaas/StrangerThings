@@ -2,9 +2,12 @@ package com.example.strangerthings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -14,6 +17,7 @@ import com.example.strangerthings.model.CharacterAffiliationAdapter;
 import com.example.strangerthings.model.CharacterApi;
 import com.example.strangerthings.model.CharacterDatabase;
 import com.example.strangerthings.model.CharacterRelationAdapter;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.NotActiveException;
 import java.util.Objects;
@@ -43,13 +47,30 @@ public class CharacterActivity extends AppCompatActivity
     private ViewPager2 affiliationsViewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_character);
 
+        setupViews();
+
+        setupApi();
+
+        setupDatabase();
+
+        try
+        {
+            showCharacter(getNameFromIntent());
+        } catch (RuntimeException ex)
+        {
+            Log.e("oof", "onCreate: ex", ex);
+            finishWithError("Something went wrong x~x");
+        }
+    }
+
+    private void setupApi()
+    {
         try
         {
             api = new CharacterApi(this);
@@ -57,7 +78,15 @@ public class CharacterActivity extends AppCompatActivity
         {
             api = null;
         }
+    }
 
+    private void setupDatabase()
+    {
+        database = new CharacterDatabase(this);
+    }
+
+    private void setupViews()
+    {
         nameTextView = findViewById(R.id.textViewCharacterName);
         aliasTextView = findViewById(R.id.textViewAliase);
         statusAndBirthDayTextView = findViewById(R.id.textViewStatusBorn);
@@ -69,17 +98,33 @@ public class CharacterActivity extends AppCompatActivity
 
         affiliationsViewPager = findViewById(R.id.viewPagerAffiliations);
         relationsViewPager = findViewById(R.id.viewPagerRelations);
+    }
 
-        database = new CharacterDatabase(this);
-
-        String name = loadInput();
-
-        try
+    private void showCharacter(String name)
+    {
+        if (database.hasCharacter(name))
         {
-            showCharacterFromName(name);
-        } catch (RuntimeException ex)
+            Snackbar.make(findViewById(android.R.id.content),
+                    "Showing from db",
+                    Snackbar.LENGTH_SHORT
+
+            ).show();
+
+            showDatabaseCharacter(name);
+
+
+        } else if (api != null)
         {
-            finishWithError("Something went wrong x~x");
+            Snackbar.make(findViewById(android.R.id.content),
+                    "Showing from api",
+                    Snackbar.LENGTH_SHORT
+
+            ).show();
+
+            showApiCharacter(name);
+        } else
+        {
+            finishWithError("Character not found in database and api not available");
         }
     }
 
@@ -94,33 +139,50 @@ public class CharacterActivity extends AppCompatActivity
         finish();
     }
 
-    private void showCharacterFromName(String name)
+    private void showDatabaseCharacter(String name)
     {
-        if (database.characterNameExists(name))
-        {
-            Character character = database.searchCharacter(name);
+        Character character = database.searchCharacter(name);
 
-            displayCharacter(character);
-        } else if (api != null)
+        if (character == null)
         {
-            api.searchCharacter(name, this::onApiCharacterSearched);
+            finishWithError("Character not found in database");
+            return;
+        }
+
+        displayCharacter(character);
+    }
+
+    private void showApiCharacter(String name)
+    {
+        api.searchCharacter(name, character -> {
+
+            if (character == null)
+            {
+                finishWithError("Character not found in api nor database");
+            } else
+            {
+                this.onApiResponse(character);
+            }
+        });
+    }
+
+    private void onApiResponse(@Nullable Character character)
+    {
+        if (character != null)
+        {
+            if (!database.hasCharacter(character.getName()))
+            {
+                database.insertCharacter(character);
+            }
+
+            runOnUiThread(() -> displayCharacter(character));
         } else
         {
-           finishWithError("Character not found");
+            finishWithError("Character not found");
         }
     }
 
-    private void onApiCharacterSearched(Character character)
-    {
-        if (character != null && !database.characterNameExists(character.getName()))
-        {
-            database.insertCharacter(character);
-        }
-
-        runOnUiThread(() -> displayCharacter(character));
-    }
-
-    private String loadInput()
+    private String getNameFromIntent()
     {
         Intent source = getIntent();
 
@@ -135,17 +197,11 @@ public class CharacterActivity extends AppCompatActivity
 
     private void onCharacterSelected(Character clickedCharacter)
     {
-        showCharacterFromName(clickedCharacter.getName());
+        showCharacter(clickedCharacter.getName());
     }
 
-    private void displayCharacter(Character character)
+    private void displayCharacter(@NonNull Character character)
     {
-        if (character == null)
-        {
-            finishWithError("Character not found");
-            return;
-        }
-
         setCharacterPicture(character);
 
         RecyclerView.Adapter<?> adapter =
@@ -182,7 +238,8 @@ public class CharacterActivity extends AppCompatActivity
         if (api != null)
         {
             api.downloadCharacterPicture(character,
-                    bitmap -> runOnUiThread(() -> pictureImageView.setImageBitmap(bitmap)));
+                    bitmap -> runOnUiThread(() -> pictureImageView.setImageBitmap(bitmap))
+            );
         }
     }
 

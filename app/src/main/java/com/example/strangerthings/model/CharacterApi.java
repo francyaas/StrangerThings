@@ -7,6 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,7 @@ import java.util.function.Consumer;
 
 public class CharacterApi
 {
-    public CharacterApi(Context context) throws NotActiveException
+    public CharacterApi(@NonNull Context context) throws NotActiveException
     {
         ConnectivityManager manager;
 
@@ -39,7 +41,7 @@ public class CharacterApi
         }
     }
 
-    public void searchCharacter(String name, Consumer<Character> onResult)
+    public void searchCharacter(@NonNull String name, @NonNull Consumer<Character> onResult)
     {
         new Thread(() -> {
 
@@ -49,7 +51,7 @@ public class CharacterApi
 
             String response = readConnection(connection);
 
-            JSONArray responseJson = getReponseJSONArray(response);
+            JSONArray responseJson = getResponseArray(response);
 
             Character result = null;
 
@@ -69,7 +71,7 @@ public class CharacterApi
         }).start();
     }
 
-    public void downloadCharacterPicture(Character character, Consumer<Bitmap> onResult)
+    public void downloadCharacterPicture(@NonNull Character character, @NonNull Consumer<Bitmap> onResult)
     {
         new Thread(() -> {
 
@@ -90,7 +92,7 @@ public class CharacterApi
 
         String response = readConnection(connection);
 
-        JSONArray array = getReponseJSONArray(response);
+        JSONArray array = getResponseArray(response);
 
 
         Character result = null;
@@ -174,7 +176,7 @@ public class CharacterApi
     }
 
 
-    private JSONArray getReponseJSONArray(String data)
+    private JSONArray getResponseArray(String data)
     {
         try
         {

@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.example.strangerthings.test.BuildConfig;
+
 import org.junit.Test;
 
 import java.io.NotActiveException;
@@ -36,7 +38,7 @@ public class CharacterApiTest
 
     }
 
-    @Test
+    @Test()
     public void searchCharacter()
     {
         CharacterApi api = getSubject();
@@ -124,7 +126,13 @@ public class CharacterApiTest
     {
         try
         {
-            Thread.sleep(milliseconds);
+            if (BuildConfig.DEBUG) {
+                Thread.sleep(600000);
+            }
+            else {
+                Thread.sleep(milliseconds);
+            }
+
             fail("Operation timed out " + milliseconds + " limit.");
         } catch (InterruptedException ex)
         {
