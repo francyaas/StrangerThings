@@ -9,10 +9,10 @@
     tools:context=".SplashActivity">
 
     <ImageView
-        android:id="@+id/imageViewSplashLogo"
+        android:id="@+id/imgvwsplashlogo"
         android:layout_width="290dp"
         android:layout_height="180dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,6 +38,16 @@
         android:text="@string/my_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewSplashLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/imgvwsplashlogo" />
+
+    <ImageView
+        android:id="@+id/imgvwnewstuff"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCredits"
+        app:srcCompat="@drawable/st_newstuff" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

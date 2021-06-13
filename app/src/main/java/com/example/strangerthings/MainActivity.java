@@ -1,14 +1,32 @@
 package com.example.strangerthings;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
+
+import java.security.Policy;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -21,6 +39,44 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         editTextCharacterName = findViewById(R.id.editTextCharacterName);
+
+        SensorManager manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor sensor = manager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        if(sensor == null)
+        {
+            Snackbar.make(findViewById(android.R.id.content), "NO SENSOR",
+                    Snackbar.LENGTH_LONG).show();
+        }
+        else
+        {
+            manager.registerListener((SensorEventListener) this, sensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    // @Override
+    public void onSensorChanged(SensorEvent event)
+    {
+        boolean isClose = event.values[0] > 0;
+
+        if(!isClose)
+        {
+            Snackbar.make(findViewById(android.R.id.content), "SENSOR IS HERE",
+                    Snackbar.LENGTH_LONG).show();
+            //Flashlight();
+        }
+    }
+
+    // @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    {
+
+    }
+
+    public void Flashlight()
+    {
+
     }
 
     public void startGeoActivity(View buttonGeo)
