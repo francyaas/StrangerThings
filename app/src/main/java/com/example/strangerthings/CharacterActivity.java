@@ -65,7 +65,7 @@ public class CharacterActivity extends AppCompatActivity
         } catch (RuntimeException ex)
         {
             Log.e("oof", "onCreate: ex", ex);
-            finishWithError("Something went wrong x~x");
+            finishWithError("ERROR");
         }
     }
 
@@ -105,9 +105,8 @@ public class CharacterActivity extends AppCompatActivity
         if (database.hasCharacter(name))
         {
             Snackbar.make(findViewById(android.R.id.content),
-                    "Showing from db",
+                    "DATABASE",
                     Snackbar.LENGTH_SHORT
-
             ).show();
 
             showDatabaseCharacter(name);
@@ -116,15 +115,14 @@ public class CharacterActivity extends AppCompatActivity
         } else if (api != null)
         {
             Snackbar.make(findViewById(android.R.id.content),
-                    "Showing from api",
+                    "API",
                     Snackbar.LENGTH_SHORT
-
             ).show();
 
             showApiCharacter(name);
         } else
         {
-            finishWithError("Character not found in database and api not available");
+            finishWithError("CHARACTER NOT FOUND - API NOT AVAILABLE");
         }
     }
 
@@ -145,7 +143,7 @@ public class CharacterActivity extends AppCompatActivity
 
         if (character == null)
         {
-            finishWithError("Character not found in database");
+            finishWithError("CHARACTER NOT FOUND IN DATABASE");
             return;
         }
 
@@ -158,7 +156,7 @@ public class CharacterActivity extends AppCompatActivity
 
             if (character == null)
             {
-                finishWithError("Character not found in api nor database");
+                finishWithError("CHARACTER NOT FOUND");
             } else
             {
                 this.onApiResponse(character);
@@ -178,7 +176,7 @@ public class CharacterActivity extends AppCompatActivity
             runOnUiThread(() -> displayCharacter(character));
         } else
         {
-            finishWithError("Character not found");
+            finishWithError("CHARACTER NOT FOUND");
         }
     }
 

@@ -21,27 +21,85 @@
         android:textAllCaps="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewMainLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/imgvwlogo" />
 
     <Button
         android:id="@+id/buttonSearch"
         style="@style/buttonSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_width="240dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:onClick="Search"
         android:text="@string/search_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgvwsearch"
+        app:layout_constraintHorizontal_bias="0.859"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCharacterName" />
 
+    <Button
+        android:id="@+id/buttonGeo"
+        style="@style/buttonSearch"
+        android:layout_width="240dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:onClick="Search"
+        android:text="@string/location_button"
+        app:layout_constraintEnd_toStartOf="@+id/imgvwgeo"
+        app:layout_constraintHorizontal_bias="0.884"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSearch" />
+
+    <Button
+        android:id="@+id/buttonGeo2"
+        style="@style/buttonSearch"
+        android:layout_width="240dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:onClick="Search"
+        android:text="@string/flashlight_button"
+        app:layout_constraintEnd_toStartOf="@+id/imgvwgeo2"
+        app:layout_constraintHorizontal_bias="0.884"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGeo" />
+
     <ImageView
-        android:id="@+id/imageViewMainLogo"
+        android:id="@+id/imgvwgeo"
+        android:layout_width="42dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSearch"
+        app:srcCompat="@drawable/st_geoicon" />
+
+    <ImageView
+        android:id="@+id/imgvwgeo2"
+        android:layout_width="42dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGeo"
+        app:srcCompat="@drawable/st_flashlighticon" />
+
+    <ImageView
+        android:id="@+id/imgvwsearch"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCharacterName"
+        app:srcCompat="@drawable/st_searchicon" />
+
+    <ImageView
+        android:id="@+id/imgvwlogo"
         android:layout_width="290dp"
         android:layout_height="180dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/st_applogo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

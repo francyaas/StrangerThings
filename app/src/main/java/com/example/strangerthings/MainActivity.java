@@ -23,11 +23,27 @@ public class MainActivity extends AppCompatActivity
         editTextCharacterName = findViewById(R.id.editTextCharacterName);
     }
 
+    public void startGeoActivity(View buttonGeo)
+    {
+        Intent starter = new Intent(this, GeoActivity.class);
+        startActivity(starter);
+    }
+
     public void Search(View buttonSearch)
     {
-        String name = editTextCharacterName.getText().toString();
+        if (editTextCharacterName.getText().toString().equals(""))
+        {
+            Snackbar.make(findViewById(android.R.id.content),
+                    "ERRO",
+                    Snackbar.LENGTH_SHORT
+            ).show();
+        }
+        else
+        {
+            String name = editTextCharacterName.getText().toString();
 
-        startCharacterActivity(name);
+            startCharacterActivity(name);
+        }
     }
 
     private void startCharacterActivity(String name)
