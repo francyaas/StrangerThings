@@ -1,39 +1,29 @@
 package com.example.strangerthings;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.security.Policy;
-
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements SensorEventListener
 {
     EditText editTextCharacterName;
 
+    private boolean flashLightOn = false;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -56,36 +46,59 @@ public class MainActivity extends AppCompatActivity
     }
 
     // @Override
-    public void onSensorChanged(SensorEvent event)
+    public void onSensorChanged(@NonNull SensorEvent event)
     {
-        boolean isClose = event.values[0] > 0;
+        boolean isClose = event.values[0] == 0;
 
-        if(!isClose)
+        if (!isClose && flashLightOn)
         {
-            Snackbar.make(findViewById(android.R.id.content), "SENSOR IS HERE",
-                    Snackbar.LENGTH_LONG).show();
-            //Flashlight();
+            flashLightOn = false;
+
+            turnFlashLightOff();
+        }
+
+        if (isClose && !flashLightOn)
+        {
+
+            flashLightOn = true;
+
+
+            turnFlashLightOn();
+
         }
     }
 
-    // @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    @Override
+    public void onAccuracyChanged(@NonNull Sensor sensor, int accuracy)
     {
 
     }
 
-    public void Flashlight()
+    public void turnFlashLightOn()
     {
+        Snackbar.make(findViewById(android.R.id.content), "Flash on",
+                Snackbar.LENGTH_LONG).show();
+
+        // todo: flashlight code here
 
     }
 
-    public void startGeoActivity(View buttonGeo)
+    public void turnFlashLightOff()
+    {
+        Snackbar.make(findViewById(android.R.id.content), "Flash off",
+                Snackbar.LENGTH_LONG).show();
+
+        // todo: flashlight code here
+
+    }
+
+    public void startGeoActivity(@NonNull View buttonGeo)
     {
         Intent starter = new Intent(this, GeoActivity.class);
         startActivity(starter);
     }
 
-    public void Search(View buttonSearch)
+    public void Search(@NonNull View buttonSearch)
     {
         if (editTextCharacterName.getText().toString().equals(""))
         {
