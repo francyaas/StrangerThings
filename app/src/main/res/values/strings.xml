@@ -20,6 +20,4 @@
     <string name="relations">RELATIONS</string>
     <string name="character_name_relation">CHARACTER NAME</string>
     <string name="character_status_born_relation">STATUS, BORN</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
 </resources>
