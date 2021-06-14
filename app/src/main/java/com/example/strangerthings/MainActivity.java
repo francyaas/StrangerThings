@@ -2,10 +2,13 @@ package com.example.strangerthings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -19,6 +22,9 @@ import com.google.android.material.snackbar.Snackbar;
 public class MainActivity extends AppCompatActivity implements SensorEventListener
 {
     EditText editTextCharacterName;
+
+    CameraManager cameraManager;
+    String cameraId;
 
     private boolean flashLightOn = false;
 
@@ -43,6 +49,36 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             manager.registerListener((SensorEventListener) this, sensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
+
+        boolean isFlashAvailable = getApplicationContext().getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
+
+        if (isFlashAvailable)
+        {
+            cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+            try
+            {
+                cameraId = cameraManager.getCameraIdList()[0];
+            }
+            catch (CameraAccessException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setFlashLight (boolean state)
+    {
+        try
+        {
+            cameraManager.setTorchMode(cameraId, state);
+        }
+        catch (android.hardware.camera2.CameraAccessException e)
+        {
+            Snackbar.make(findViewById(android.R.id.content), "ERRO",
+                    Snackbar.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     // @Override
@@ -59,12 +95,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         if (isClose && !flashLightOn)
         {
-
             flashLightOn = true;
 
-
             turnFlashLightOn();
-
         }
     }
 
@@ -76,19 +109,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void turnFlashLightOn()
     {
-        Snackbar.make(findViewById(android.R.id.content), "Flash on",
+        Snackbar.make(findViewById(android.R.id.content), "FLASHLIGHT ON",
                 Snackbar.LENGTH_LONG).show();
 
-        // todo: flashlight code here
-
+        setFlashLight(true);
     }
 
     public void turnFlashLightOff()
     {
-        Snackbar.make(findViewById(android.R.id.content), "Flash off",
+        Snackbar.make(findViewById(android.R.id.content), "FLASHLIGHT OFF",
                 Snackbar.LENGTH_LONG).show();
 
-        // todo: flashlight code here
+        setFlashLight(false);
 
     }
 

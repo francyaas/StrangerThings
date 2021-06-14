@@ -47,7 +47,6 @@ public class CharacterDatabase
 
         cursor.close();
 
-
         return result;
     }
 
@@ -84,7 +83,6 @@ public class CharacterDatabase
         statement.execute();
     }
 
-
     /**
      * Finds whether a character exists or not.
      * @param name The name of the character to search
@@ -99,7 +97,6 @@ public class CharacterDatabase
                 new String[]{name})) {
 
             return cursor.getCount() > 0;
-
         }
     }
 
@@ -110,7 +107,6 @@ public class CharacterDatabase
                 new String[]{name})) {
 
             return cursor.getCount() > 0;
-
         }
 
     }
@@ -125,7 +121,6 @@ public class CharacterDatabase
 
         database.execSQL("update Character set withRelations = 1 where name = ?",
                 new String[]{ character.getName() });
-
     }
 
 
@@ -171,11 +166,11 @@ public class CharacterDatabase
         try
         {
             result.setPhotoUrl(new URL(cursor.getString(1)));
-        } catch (MalformedURLException ex)
+        }
+        catch (MalformedURLException ex)
         {
             throw new RuntimeException(ex);
         }
-
 
         result.setStatus(cursor.getString(2));
 
@@ -210,7 +205,6 @@ public class CharacterDatabase
                         "firstCharacterName = ?" +
                         ") " +
                         ""
-
                 , new String[]{character.getName(), character.getName()});
 
         while (cursor.moveToNext())
@@ -221,7 +215,6 @@ public class CharacterDatabase
             {
                 relatedCharacters.add(current);
             }
-
         }
 
         character.setRelatedCharacters(relatedCharacters);
@@ -291,7 +284,6 @@ public class CharacterDatabase
                 "affiliated text" +
                 ");"
         );
-
 
         return database;
     }

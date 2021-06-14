@@ -68,11 +68,11 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_marginTop="20dp"
+            android:background="@color/stranger_red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/st_iconbg" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewCharacterName"
