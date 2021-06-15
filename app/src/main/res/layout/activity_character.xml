@@ -34,7 +34,7 @@
             style="@style/redText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:text="@string/affiliations"
             android:textColor="@color/stranger_red"
             android:textSize="18sp"
@@ -51,7 +51,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewRelations" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewInstructionRe2" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerAffiliations"
@@ -61,7 +61,7 @@
             android:background="@color/stranger_red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAffiliations" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewInstructionAf" />
 
         <ImageView
             android:id="@+id/imageViewCharacter"
@@ -141,6 +141,41 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewOccupation" />
+
+        <TextView
+            android:id="@+id/textViewInstructionAf"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/instruction_scroll"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAffiliations" />
+
+        <TextView
+            android:id="@+id/textViewInstructionRe"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/instruction_scroll"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRelations" />
+
+        <TextView
+            android:id="@+id/textViewInstructionRe2"
+            style="@style/redText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/instruction"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewInstructionRe" />
 
         <TextView
             android:id="@+id/textViewPortrayedBy"

@@ -14,6 +14,8 @@
     <string name="residence">RESIDENCE</string>
     <string name="portrayed_by">PORTRAYED BY %s</string>
 
+    <string name="instruction_scroll">SCROLL LEFT TO SEE MORE</string>
+
     <string name="affiliations">AFFILIATIONS</string>
     <string name="affiliation">AFFILIATION</string>
 
