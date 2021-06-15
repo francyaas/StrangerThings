@@ -55,7 +55,7 @@
         android:layout_width="240dp"
         android:layout_height="50dp"
         android:layout_marginTop="120dp"
-        android:onClick="Search"
+        android:onClick="flashlight"
         android:text="@string/flashlight_button"
         app:layout_constraintEnd_toStartOf="@+id/imgvwflashlight"
         app:layout_constraintHorizontal_bias="0.884"
