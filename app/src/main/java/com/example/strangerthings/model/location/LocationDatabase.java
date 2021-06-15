@@ -1,4 +1,4 @@
-package com.example.strangerthings.model;
+package com.example.strangerthings.model.location;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +9,7 @@ public class LocationDatabase
 {
     private final Context context;
 
-    public LocationDatabase(Context context)
+    public LocationDatabase(@NonNull Context context)
     {
         this.context = context;
         getDatabase();

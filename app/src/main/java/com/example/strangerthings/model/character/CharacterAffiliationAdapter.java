@@ -1,4 +1,4 @@
-package com.example.strangerthings.model;
+package com.example.strangerthings.model.character;
 
 import android.view.LayoutInflater;
 import android.view.View;

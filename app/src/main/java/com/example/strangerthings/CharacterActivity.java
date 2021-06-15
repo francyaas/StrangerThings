@@ -12,11 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.strangerthings.model.Character;
-import com.example.strangerthings.model.CharacterAffiliationAdapter;
-import com.example.strangerthings.model.CharacterApi;
-import com.example.strangerthings.model.CharacterDatabase;
-import com.example.strangerthings.model.CharacterRelationAdapter;
+import com.example.strangerthings.model.character.Character;
+import com.example.strangerthings.model.character.CharacterAffiliationAdapter;
+import com.example.strangerthings.model.character.CharacterApi;
+import com.example.strangerthings.model.character.CharacterDatabase;
+import com.example.strangerthings.model.character.CharacterRelationAdapter;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.NotActiveException;

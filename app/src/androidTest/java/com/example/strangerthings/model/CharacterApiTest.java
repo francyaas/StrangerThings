@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.example.strangerthings.model.character.Character;
+import com.example.strangerthings.model.character.CharacterApi;
 import com.example.strangerthings.test.BuildConfig;
 
 import org.junit.Test;

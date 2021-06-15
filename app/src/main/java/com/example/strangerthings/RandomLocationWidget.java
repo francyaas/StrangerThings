@@ -1,4 +1,4 @@
-package com.example.strangerthings.model;
+package com.example.strangerthings;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -6,12 +6,9 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 
-import com.example.strangerthings.R;
+import androidx.annotation.NonNull;
 
 /**
  * Implementation of App Widget functionality.
@@ -60,7 +57,11 @@ public class RandomLocationWidget extends AppWidgetProvider
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+    public void onUpdate(
+            @NonNull Context context,
+            @NonNull AppWidgetManager appWidgetManager,
+            @NonNull int[] appWidgetIds
+    )
     {
         for (int appWidgetId : appWidgetIds)
         {

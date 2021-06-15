@@ -1,4 +1,4 @@
-package com.example.strangerthings.model;
+package com.example.strangerthings.model.character;
 
 import android.content.Context;
 import android.database.Cursor;
