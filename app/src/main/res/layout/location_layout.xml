@@ -6,7 +6,7 @@
     android:background="@color/stranger_red">
 
     <ImageView
-        android:id="@+id/imageViewCharacterRelation2"
+        android:id="@+id/imageViewCardLocation"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="7dp"
@@ -17,7 +17,7 @@
         app:layout_constraintVertical_bias="0.499" />
 
     <TextView
-        android:id="@+id/textViewCharacterRelationName2"
+        android:id="@+id/textViewCardLocationName"
         style="@style/blackText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,6 +25,6 @@
         android:text="@string/character_name_relation"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewCharacterRelation2"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCardLocation"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
