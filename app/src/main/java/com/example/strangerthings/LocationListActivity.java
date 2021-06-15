@@ -1,6 +1,7 @@
 package com.example.strangerthings;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -44,7 +45,10 @@ public class LocationListActivity extends AppCompatActivity
         viewPager = findViewById(R.id.viewPagerLocations);
     }
 
-    private void setupDatabase() { database = new LocationDatabase(this); }
+    private void setupDatabase()
+    {
+        database = new LocationDatabase(this);
+    }
 
     private void loadLocations()
     {
@@ -52,7 +56,16 @@ public class LocationListActivity extends AppCompatActivity
 
         adapter = new LocationAdapter(locations);
 
+        adapter.onLocationClick(location -> searchLocation(location.getAddress()));
+
         viewPager.setAdapter(adapter);
+    }
+
+    private void searchLocation(String name)
+    {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + name));
+
+        startActivity(intent);
     }
 
     private void checkIntent()

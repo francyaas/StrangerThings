@@ -98,7 +98,7 @@ public class RandomLocationWidget extends AppWidgetProvider
                     context,
                     appWidgetId,
                     intent,
-                    PendingIntent.FLAG_ONE_SHOT
+                    PendingIntent.FLAG_UPDATE_CURRENT
             );
 
             views.setOnClickPendingIntent(R.id.imageViewLocation, pendingIntent);

@@ -3,13 +3,11 @@ package com.example.strangerthings.model.location;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.SQLInput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +46,8 @@ public class LocationDatabase
     {
         return new Location(
                 cursor.getString(0),
-                getURL(cursor.getString(1))
+                getURL(cursor.getString(1)),
+                cursor.getString(2)
         );
     }
 
@@ -72,9 +71,9 @@ public class LocationDatabase
 
         database = context.openOrCreateDatabase("stranger_db", Context.MODE_PRIVATE, null);
 
-        database.execSQL("delete from Location;");
-
         createLocationTable(database);
+
+        database.execSQL("delete from Location;");
 
         if (!isLoaded(database))
         {
@@ -107,7 +106,7 @@ public class LocationDatabase
         database.execSQL("" +
                 "insert into Location (name, photoUrl, adress) values (" +
                 "'Starcourt Mall'," +
-                "'https://i.pinimg.com/originals/de/ad/87/dead87a92034d597273dd2ae6b6897c3.jpg'," +
+                "'https://i0.wp.com/bloody-disgusting.com/wp-content/uploads/2019/07/star5.jpeg?ssl=1'," +
                 "'2100 Pleasant Hill Rd, Duluth, GA 30096, EUA'" +
                 ");"
         );

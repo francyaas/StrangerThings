@@ -15,19 +15,27 @@ import com.example.strangerthings.R;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder>
 {
     private final List<Location> locations;
+
+    private Consumer<Location> clickListener;
+
+    private final ImageLoader imageLoader = new ImageLoader();
+
+    private RecyclerView recyclerView;
 
     public LocationAdapter(@NonNull List<Location> locations)
     {
         this.locations = locations;
     }
 
-    private final ImageLoader imageLoader = new ImageLoader();
-
-    private RecyclerView recyclerView;
+    public void onLocationClick(@NonNull Consumer<Location> clickListener)
+    {
+        this.clickListener = clickListener;
+    }
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView)
@@ -87,6 +95,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
             nameTextView = itemView.findViewById(R.id.textViewCardLocationName);
             imageView = itemView.findViewById(R.id.imageViewCardLocation);
+
+            itemView.setOnClickListener(v -> {
+
+                if (clickListener != null) {
+                    clickListener.accept(locations.get(getAdapterPosition()));
+                }
+
+            });
         }
 
         public void bindToLocation(@NonNull Location location)

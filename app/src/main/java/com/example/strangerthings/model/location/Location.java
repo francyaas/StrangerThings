@@ -10,10 +10,14 @@ public class Location
 
     private final URL photoUrl;
 
-    public Location(@NonNull String name, @NonNull URL photoUrl)
+    private final String address;
+
+
+    public Location(@NonNull String name, @NonNull URL photoUrl, @NonNull String address)
     {
         this.name = name;
         this.photoUrl = photoUrl;
+        this.address = address;
     }
 
     @NonNull
@@ -26,5 +30,11 @@ public class Location
     public URL getPhotoUrl()
     {
         return photoUrl;
+    }
+
+    @NonNull
+    public String getAddress()
+    {
+        return address;
     }
 }
