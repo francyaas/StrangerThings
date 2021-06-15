@@ -55,6 +55,14 @@ public class PagerRowView extends ConstraintLayout
         ));
     }
 
+    public void setHeightType(int heightType) {
+        setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                heightType
+        ));
+    }
+
+
 
     @NonNull
     public ImageView getImageView()

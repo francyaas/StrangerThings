@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relationsConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/stranger_red">
 
     <ImageView
@@ -11,6 +11,8 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="7dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
         android:background="@color/stranger_black"
         android:contentDescription="@string/related_image"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -6,7 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.strangerthings.model.location.Location;
 import com.example.strangerthings.model.location.LocationAdapter;
@@ -21,7 +22,7 @@ public class LocationListActivity extends AppCompatActivity
 
     private LocationDatabase database;
 
-    private ViewPager2 viewPager;
+    private RecyclerView recyclerView;
 
     private LocationAdapter adapter;
 
@@ -42,7 +43,9 @@ public class LocationListActivity extends AppCompatActivity
 
     private void setupViews()
     {
-        viewPager = findViewById(R.id.viewPagerLocations);
+        recyclerView = findViewById(R.id.locationRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setupDatabase()
@@ -58,7 +61,7 @@ public class LocationListActivity extends AppCompatActivity
 
         adapter.onLocationClick(location -> searchLocation(location.getAddress()));
 
-        viewPager.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
     private void searchLocation(String name)

@@ -47,7 +47,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     @Override
     public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        return new LocationViewHolder(new PagerRowView(parent.getContext()));
+        PagerRowView view = new PagerRowView(parent.getContext());
+
+        view.setHeightType(ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        return new LocationViewHolder(view);
     }
 
     @Override
@@ -81,6 +85,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     public class LocationViewHolder extends RecyclerView.ViewHolder
     {
         TextView nameTextView;
+        TextView addressTextView;
         ImageView imageView;
 
         public LocationViewHolder(@NonNull PagerRowView rowView)
@@ -88,6 +93,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             super(rowView);
 
             nameTextView = rowView.getTopTextView();
+            addressTextView = rowView.getBottomTextView();
             imageView = rowView.getImageView();
 
             rowView.getBottomTextView().setText("");
@@ -104,6 +110,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         public void bindToLocation(@NonNull Location location)
         {
             nameTextView.setText(location.getName());
+            addressTextView.setText(location.getAddress());
 
             saveImage(location.getPhotoUrl());
         }

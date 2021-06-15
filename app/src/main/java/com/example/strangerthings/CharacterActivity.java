@@ -98,7 +98,7 @@ public class CharacterActivity extends AppCompatActivity
         pictureImageView = findViewById(R.id.imageViewCharacter);
 
         affiliationsViewPager = findViewById(R.id.viewPagerAffiliations);
-        relationsViewPager = findViewById(R.id.viewPagerLocations);
+        relationsViewPager = findViewById(R.id.viewPagerRelations);
     }
 
     private void showCharacter(String name)
