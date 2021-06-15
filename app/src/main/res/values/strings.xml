@@ -34,4 +34,9 @@
 
     <string name="sample">Sample</string>
 
+    <string name="logo">STRANGER THINGS CHARACTER SEARCHER</string>
+    <string name="new_stuff">LOCATION AND SENSOR ADAPTED</string>
+    <string name="character_image">CHARACTER IMAGE</string>
+    <string name="related_image">RELATED IMAGE</string>
+    <string name="location_image">LOCATION IMAGE</string>
 </resources>
