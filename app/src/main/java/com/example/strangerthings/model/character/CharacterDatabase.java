@@ -85,6 +85,7 @@ public class CharacterDatabase
 
     /**
      * Finds whether a character exists or not.
+     *
      * @param name The name of the character to search
      * @return true if the character has been inserted with its relations.
      */
@@ -94,7 +95,8 @@ public class CharacterDatabase
 
         try (Cursor cursor = database.rawQuery(
                 "select name from Character where name = ? and withRelations",
-                new String[]{name})) {
+                new String[]{name}))
+        {
 
             return cursor.getCount() > 0;
         }
@@ -104,23 +106,30 @@ public class CharacterDatabase
     {
 
         try (Cursor cursor = database.rawQuery("select name from Character where name = ?",
-                new String[]{name})) {
+                new String[]{name}))
+        {
 
             return cursor.getCount() > 0;
         }
 
     }
 
-    private void insertCharacterRelated(SQLiteDatabase database, Character character) {
+    private void insertCharacterRelated(SQLiteDatabase database, Character character)
+    {
 
-        for (Character related : character.getRelatedCharacters()) {
-            if (!characterNameExists(related.getName(), database)) {
-                insertCharacterData(database, related);
+        if (character.getRelatedCharacters() != null)
+        {
+            for (Character related : character.getRelatedCharacters())
+            {
+                if (!characterNameExists(related.getName(), database))
+                {
+                    insertCharacterData(database, related);
+                }
             }
         }
 
         database.execSQL("update Character set withRelations = 1 where name = ?",
-                new String[]{ character.getName() });
+                new String[]{character.getName()});
     }
 
 
@@ -148,13 +157,17 @@ public class CharacterDatabase
         SQLiteStatement statement = database
                 .compileStatement("insert into CharacterAffiliation values (?, ?)");
 
-        for (String affiliation : character.getAffiliations())
+        if (character.getAffiliations() != null)
         {
-            statement.bindString(1, character.getName());
-            statement.bindString(2, affiliation);
+            for (String affiliation : character.getAffiliations())
+            {
+                statement.bindString(1, character.getName());
+                statement.bindString(2, affiliation);
 
-            statement.execute();
+                statement.execute();
+            }
         }
+
     }
 
     private Character getCursorCharacter(Cursor cursor)
@@ -166,8 +179,7 @@ public class CharacterDatabase
         try
         {
             result.setPhotoUrl(new URL(cursor.getString(1)));
-        }
-        catch (MalformedURLException ex)
+        } catch (MalformedURLException ex)
         {
             throw new RuntimeException(ex);
         }
