@@ -1,8 +1,6 @@
 package com.example.strangerthings.model.character;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.strangerthings.ImageLoader;
+import com.example.strangerthings.PagerRowView;
 import com.example.strangerthings.R;
 
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public class CharacterRelationAdapter
@@ -45,11 +43,7 @@ public class CharacterRelationAdapter
     @Override
     public CharacterRelationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.relations_layout, parent, false);
-
-        return new CharacterRelationViewHolder(view);
+        return new CharacterRelationViewHolder(new PagerRowView(parent.getContext()));
     }
 
     @Override
@@ -74,7 +68,7 @@ public class CharacterRelationAdapter
 
         private Character currentCharacter;
 
-        public CharacterRelationViewHolder(@NonNull View itemView)
+        public CharacterRelationViewHolder(@NonNull PagerRowView itemView)
         {
             super(itemView);
 
@@ -89,12 +83,9 @@ public class CharacterRelationAdapter
                 });
             }
 
-            nameTextView = itemView.findViewById(R.id.textViewCharacterRelationName);
-            statusAndBirthTextView = itemView.findViewById(R.id.textViewCharacterRelationBornStatus);
-            pictureImageView = itemView.findViewById(R.id.imageViewCharacterRelation);
-
-            Objects.requireNonNull(nameTextView);
-            Objects.requireNonNull(statusAndBirthTextView);
+            nameTextView = itemView.getTopTextView();
+            statusAndBirthTextView = itemView.getBottomTextView();
+            pictureImageView = itemView.getImageView();
         }
 
         private void downloadImage(URL url)

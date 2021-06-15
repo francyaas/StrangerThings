@@ -1,7 +1,5 @@
 package com.example.strangerthings.model.location;
 
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.strangerthings.ImageLoader;
-import com.example.strangerthings.R;
+import com.example.strangerthings.PagerRowView;
 
 import java.net.URL;
 import java.util.List;
@@ -49,11 +47,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     @Override
     public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View locationView = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.location_layout, parent, false);
-
-        return new LocationViewHolder(locationView);
+        return new LocationViewHolder(new PagerRowView(parent.getContext()));
     }
 
     @Override
@@ -89,14 +83,16 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         TextView nameTextView;
         ImageView imageView;
 
-        public LocationViewHolder(@NonNull View itemView)
+        public LocationViewHolder(@NonNull PagerRowView rowView)
         {
-            super(itemView);
+            super(rowView);
 
-            nameTextView = itemView.findViewById(R.id.textViewCardLocationName);
-            imageView = itemView.findViewById(R.id.imageViewCardLocation);
+            nameTextView = rowView.getTopTextView();
+            imageView = rowView.getImageView();
 
-            itemView.setOnClickListener(v -> {
+            rowView.getBottomTextView().setText("");
+
+            rowView.setOnClickListener(v -> {
 
                 if (clickListener != null) {
                     clickListener.accept(locations.get(getAdapterPosition()));
