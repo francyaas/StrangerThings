@@ -2,7 +2,7 @@
     <string name="app_name">Stranger Things</string>
     <string name="search_button">SEARCH</string>
     <string name="location_button">LOCATIONS</string>
-    <string name="flashlight_button">FLASHLIGHT</string>
+    <string name="flashlight_button">PROXIMITY SENSOR</string>
     <string name="credits">API CREATED BY\nPAIGE GORRY\nKATE DAMERON</string>
     <string name="my_name">YASMIN FRANCISQUETTI</string>
 
