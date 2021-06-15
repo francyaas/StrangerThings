@@ -1,23 +1,28 @@
 package com.example.strangerthings;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.os.Bundle;
-
-import com.example.strangerthings.model.LocationAdapter;
 import com.example.strangerthings.model.location.Location;
+import com.example.strangerthings.model.location.LocationAdapter;
 import com.example.strangerthings.model.location.LocationDatabase;
 
 import java.util.List;
+import java.util.Objects;
 
 public class LocationListActivity extends AppCompatActivity
 {
+    public static final String EXTRA_LOCATION_NAME = "location_name";
 
-    LocationDatabase database;
+    private LocationDatabase database;
 
-    ViewPager2 viewPager;
+    private ViewPager2 viewPager;
+
+    private LocationAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -30,6 +35,8 @@ public class LocationListActivity extends AppCompatActivity
         setupDatabase();
 
         loadLocations();
+
+        checkIntent();
     }
 
     private void setupViews()
@@ -43,6 +50,22 @@ public class LocationListActivity extends AppCompatActivity
     {
         List<Location> locations = database.getLocations();
 
-        viewPager.setAdapter(new LocationAdapter(locations));
+        adapter = new LocationAdapter(locations);
+
+        viewPager.setAdapter(adapter);
+    }
+
+    private void checkIntent()
+    {
+        Objects.requireNonNull(adapter);
+
+        Intent intent = getIntent();
+
+        String locationName = intent.getStringExtra(EXTRA_LOCATION_NAME);
+
+        if (locationName != null)
+        {
+            adapter.scrollByName(locationName);
+        }
     }
 }

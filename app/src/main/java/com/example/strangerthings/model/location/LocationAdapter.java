@@ -1,4 +1,4 @@
-package com.example.strangerthings.model;
+package com.example.strangerthings.model.location;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.strangerthings.ImageLoader;
 import com.example.strangerthings.R;
-import com.example.strangerthings.model.location.Location;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder>
 {
@@ -26,6 +26,16 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     }
 
     private final ImageLoader imageLoader = new ImageLoader();
+
+    private RecyclerView recyclerView;
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView)
+    {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        this.recyclerView = recyclerView;
+    }
 
     @NonNull
     @Override
@@ -44,6 +54,20 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         Location location = locations.get(position);
 
         holder.bindToLocation(location);
+    }
+
+    public void scrollByName(@NonNull String locationName) {
+
+        Objects.requireNonNull(recyclerView);
+
+        locations
+                .stream()
+                .filter(l -> l.getName().equals(locationName))
+                .findFirst()
+                .ifPresent(
+                        location -> recyclerView.scrollToPosition(locations.indexOf(location))
+                );
+
     }
 
     @Override
