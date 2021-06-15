@@ -1,11 +1,6 @@
 package com.example.strangerthings.model.character;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.strangerthings.ImageLoader;
 import com.example.strangerthings.R;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRelationViewHolder>
+public class CharacterRelationAdapter
+        extends RecyclerView.Adapter<CharacterRelationAdapter.CharacterRelationViewHolder>
 {
     private final List<Character> characterList;
 
@@ -33,14 +27,18 @@ public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRela
 
     private final Consumer<Character> onClick;
 
-    public CharacterRelationAdapter(Context context,
-                                    List<Character> characterList,
-                                    Consumer<Character> onClick
-                                    )
+    private final ImageLoader imageLoader;
+
+    public CharacterRelationAdapter(
+            @NonNull Context context,
+            @NonNull List<Character> characterList,
+            @NonNull Consumer<Character> onClick
+    )
     {
-        this.characterList = characterList;
         this.context = context;
+        this.characterList = characterList;
         this.onClick = onClick;
+        this.imageLoader = new ImageLoader();
     }
 
     @NonNull
@@ -51,7 +49,7 @@ public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRela
                 .from(parent.getContext())
                 .inflate(R.layout.relations_layout, parent, false);
 
-        return new CharacterRelationViewHolder(view, context, onClick);
+        return new CharacterRelationViewHolder(view);
     }
 
     @Override
@@ -65,83 +63,56 @@ public class CharacterRelationAdapter extends RecyclerView.Adapter<CharacterRela
     {
         return characterList.size();
     }
-}
 
-class CharacterRelationViewHolder extends RecyclerView.ViewHolder
-{
-    private final ImageView pictureImageView;
 
-    private final TextView nameTextView;
-    private final TextView statusAndBirthTextView;
-
-    private final Context context;
-
-    private Character currentCharacter;
-
-    public CharacterRelationViewHolder(@NonNull View itemView,
-                                       Context context,
-                                       Consumer<Character> onClick)
+    class CharacterRelationViewHolder extends RecyclerView.ViewHolder
     {
-        super(itemView);
+        private final ImageView pictureImageView;
 
-        if (onClick != null)
+        private final TextView nameTextView;
+        private final TextView statusAndBirthTextView;
+
+        private Character currentCharacter;
+
+        public CharacterRelationViewHolder(@NonNull View itemView)
         {
-            itemView.setOnClickListener(itself -> {
+            super(itemView);
 
-                if (currentCharacter != null)
-                {
-                    onClick.accept(currentCharacter);
-                }
-            });
-        }
-
-        this.context = context;
-
-        nameTextView = itemView.findViewById(R.id.textViewCharacterRelationName);
-        statusAndBirthTextView = itemView.findViewById(R.id.textViewCharacterRelationBornStatus);
-        pictureImageView = itemView.findViewById(R.id.imageViewCharacterRelation);
-
-        Objects.requireNonNull(nameTextView);
-        Objects.requireNonNull(statusAndBirthTextView);
-    }
-
-    private void downloadImage(URL url)
-    {
-        new Thread(() -> {
-
-            try
+            if (onClick != null)
             {
-                URLConnection connection = url.openConnection();
+                itemView.setOnClickListener(itself -> {
 
-                connection.connect();
-
-                InputStream stream = connection.getInputStream();
-
-                Bitmap bitmap = BitmapFactory.decodeStream(stream);
-
-
-                new Handler(Looper.getMainLooper()).post(
-                        () -> pictureImageView.setImageBitmap(bitmap)
-                );
-
-            } catch (IOException ex)
-            {
-                Log.e("oof", "downloadImage: ", ex);
+                    if (currentCharacter != null)
+                    {
+                        onClick.accept(currentCharacter);
+                    }
+                });
             }
 
-        }).start();
-    }
+            nameTextView = itemView.findViewById(R.id.textViewCharacterRelationName);
+            statusAndBirthTextView = itemView.findViewById(R.id.textViewCharacterRelationBornStatus);
+            pictureImageView = itemView.findViewById(R.id.imageViewCharacterRelation);
 
-    public void setCharacter(Character character)
-    {
-        this.currentCharacter = character;
+            Objects.requireNonNull(nameTextView);
+            Objects.requireNonNull(statusAndBirthTextView);
+        }
 
-        nameTextView.setText(character.getName());
+        private void downloadImage(URL url)
+        {
+            imageLoader.downloadAsync(url).thenAccept(pictureImageView::setImageBitmap);
+        }
 
-        statusAndBirthTextView
-                .setText(String.format(context.getString(R.string.status_born),
-                        character.getStatus(), character.getBirthYear()));
+        public void setCharacter(Character character)
+        {
+            this.currentCharacter = character;
 
-        downloadImage(character.getPhotoUrl());
+            nameTextView.setText(character.getName());
+
+            statusAndBirthTextView
+                    .setText(String.format(context.getString(R.string.status_born),
+                            character.getStatus(), character.getBirthYear()));
+
+            downloadImage(character.getPhotoUrl());
+        }
     }
 }

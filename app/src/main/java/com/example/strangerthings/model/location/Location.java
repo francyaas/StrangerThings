@@ -17,13 +17,13 @@ public class Location
     }
 
     @NonNull
-    public String getLocationName()
+    public String getName()
     {
         return name;
     }
 
     @NonNull
-    public URL getLocationPhotoUrl()
+    public URL getPhotoUrl()
     {
         return photoUrl;
     }

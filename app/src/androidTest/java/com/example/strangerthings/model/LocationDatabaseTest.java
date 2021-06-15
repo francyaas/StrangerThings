@@ -4,42 +4,70 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.example.strangerthings.model.location.Location;
 import com.example.strangerthings.model.location.LocationDatabase;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 public class LocationDatabaseTest
 {
+    Context context;
+
+    @Before
+    public void before()
+    {
+        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    }
+
 
     @Test
     public void starts()
     {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-
-
         new LocationDatabase(context);
     }
 
-    /*
 
     @Test
-    public void shows()
+    public void lists()
     {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-
         LocationDatabase database = new LocationDatabase(context);
 
         List<Location> locations = database.getLocations();
 
         assertNotNull(locations);
 
+        assertFalse(locations.isEmpty());
+
         for (Location location : locations)
         {
-            assetNotNull(location.getName());
-            assetNotNull(location);
+            assertLocation(location);
         }
     }
 
-     */
+    @Test
+    public void selectsRandom()
+    {
+        LocationDatabase database = new LocationDatabase(context);
+
+        Location location = database.getRandomLocation();
+
+        assertLocation(location);
+    }
+
+
+    private void assertLocation(Location location)
+    {
+        assertNotNull(location);
+        assertNotNull(location.getName());
+        assertNotNull(location.getPhotoUrl());
+    }
+
+
 
 }

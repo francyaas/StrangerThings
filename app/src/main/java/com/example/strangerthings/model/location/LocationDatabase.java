@@ -1,9 +1,17 @@
 package com.example.strangerthings.model.location;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.SQLInput;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationDatabase
 {
@@ -15,12 +23,69 @@ public class LocationDatabase
         getDatabase();
     }
 
+    @NonNull
+    public List<Location> getLocations()
+    {
+        SQLiteDatabase database = getDatabase();
+
+        try (Cursor cursor = database.rawQuery("select * from Location", null))
+        {
+            List<Location> locations = new ArrayList<>(cursor.getCount());
+
+            while (cursor.moveToNext())
+            {
+                Location location = getCursorLocation(cursor);
+
+                locations.add(location);
+            }
+
+            return locations;
+        }
+
+    }
+
+    private Location getCursorLocation(Cursor cursor)
+    {
+        return new Location(
+                cursor.getString(0),
+                getURL(cursor.getString(1))
+        );
+    }
+
+    private URL getURL(String string)
+    {
+        try
+        {
+            return new URL(string);
+        } catch (MalformedURLException ex)
+        {
+            throw new RuntimeException(
+                    "Failed to parse location url '" + string + "'" + ex.getMessage()
+            );
+        }
+    }
+
+
     private SQLiteDatabase getDatabase()
     {
         SQLiteDatabase database;
 
         database = context.openOrCreateDatabase("stranger_db", Context.MODE_PRIVATE, null);
 
+        database.execSQL("delete from Location;");
+
+        createLocationTable(database);
+
+        if (!isLoaded(database))
+        {
+            insertLocations(database);
+        }
+
+        return database;
+    }
+
+    private void createLocationTable(SQLiteDatabase database)
+    {
         database.execSQL("" +
                 "create table if not exists Location (" +
                 "name text," +
@@ -28,7 +93,10 @@ public class LocationDatabase
                 "adress text" +
                 ");"
         );
+    }
 
+    private void insertLocations(SQLiteDatabase database)
+    {
         database.execSQL("" +
                 "insert into Location (name, photoUrl, adress) values (" +
                 "'The Sattler Quary'," +
@@ -71,7 +139,27 @@ public class LocationDatabase
                 "'506 Center St, Palmetto, GA 30268, EUA'" +
                 ");"
         );
+    }
 
-        return database;
+    private boolean isLoaded(SQLiteDatabase database)
+    {
+        try (Cursor cursor = database.rawQuery("select count(name) from Location", null))
+        {
+            cursor.moveToFirst();
+
+            return cursor.getInt(0) > 0;
+        }
+    }
+
+    @NonNull
+    public Location getRandomLocation()
+    {
+        try (Cursor cursor = getDatabase()
+                .rawQuery("select * from Location order by random() limit 1", null))
+        {
+            cursor.moveToFirst();
+
+            return getCursorLocation(cursor);
+        }
     }
 }
