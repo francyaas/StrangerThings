@@ -146,7 +146,8 @@ public class CharacterApi
 
             return connection;
 
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             throw new RuntimeException(ex);
         }

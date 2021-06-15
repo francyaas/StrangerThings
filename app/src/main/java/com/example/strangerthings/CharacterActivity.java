@@ -62,7 +62,8 @@ public class CharacterActivity extends AppCompatActivity
         try
         {
             showCharacter(getNameFromIntent());
-        } catch (RuntimeException ex)
+        }
+        catch (RuntimeException ex)
         {
             Log.e("oof", "onCreate: ex", ex);
             finishWithError("ERROR");

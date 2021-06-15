@@ -4,11 +4,11 @@ import java.net.URL;
 
 public class Location
 {
-    public String name;
+    private String name;
 
-    public URL photoUrl;
+    private URL photoUrl;
 
-    public String adress;
+    private String adress;
 
     public String getLocationName()
     {

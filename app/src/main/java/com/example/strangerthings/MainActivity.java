@@ -124,9 +124,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    public void flashlight(View buttonFlashlight)
+    {
+        Snackbar.make(findViewById(android.R.id.content), "USE THE PROXIMITY SENSOR",
+                Snackbar.LENGTH_LONG).show();
+    }
+
     public void startGeoActivity(@NonNull View buttonGeo)
     {
-        Intent starter = new Intent(this, GeoActivity.class);
+        Intent starter = new Intent(this, LocationListActivity.class);
         startActivity(starter);
     }
 

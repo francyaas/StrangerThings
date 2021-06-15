@@ -15,8 +15,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StrangerThings">
+        <receiver android:name=".model.RandomLocationWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-        <activity android:name=".GeoActivity" />
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/random_location_widget_info" />
+        </receiver>
+
+        <activity android:name=".LocationListActivity" />
         <activity android:name=".CharacterActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
