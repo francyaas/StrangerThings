@@ -28,5 +28,7 @@
     <string name="locations">LOCATIONS</string>
     <string name="instruction">CLICK TO BE REDIRECTED!</string>
 
+    <string name="location_name">LOCATION NAME</string>
+
     <string name="refresh">REFRESH</string>
 </resources>
