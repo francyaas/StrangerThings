@@ -7,16 +7,22 @@ Na aplicação, foram implementados conceitos ensinados em aula desde o início 
 A aplicação, no final do segundo bimestre, está sendo composta por:
 
 — Pesquisa de personagens na API;
+
 — Navegação entre personagens relacionados;
+
 — Direcionamento para locais de gravação;
+
 — Armazenamento de personagens previamente pesquisados;
+
 — Widget com sorteio de localização e direcionamento para o APP;
+
 — Sensor de proximidade com ativação da lanterna do aparelho;
+
 — Implementação de custom view nos cards de relação e localidade;
+
 — Implementação de ícones 𝚎 legendas para maior acessibilidade;
 
 O trabalho foi realizado individualmente pela aluna Yasmin Francisquetti Barnes.
 
 ENTREGA:       15/06/2021
-
 APRESENTAÇÃO:  16/06/2021
