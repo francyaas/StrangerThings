@@ -22,6 +22,7 @@ A aplicação, no final do segundo bimestre, está sendo composta por:
 
 — Implementação de ícones 𝚎 legendas para maior acessibilidade;
 
+
 O trabalho foi realizado individualmente pela aluna Yasmin Francisquetti Barnes.
 
 ENTREGA:       15/06/2021
